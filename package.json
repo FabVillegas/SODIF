@@ -1,0 +1,19 @@
+{
+    "name": "sodif",
+    "description": "Small scope system using firebase and angularjs.",
+    "author": "Fabritzio Villegas",
+    "contributors": {"Diego Galvan", "Rodolfo Saldivar"},
+    "dependencies": {
+      "angular-ui-router": "~0.2.10"
+    },
+    "version": "0.1.0",
+    "devDependencies": {
+        "grunt": "~0.4.5",
+        "grunt-contrib-uglify": "~0.5.0",
+        "grunt-contrib-cssmin": "~0.10.0"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git://github.com/FabVillegas/sodif"
+    }
+}

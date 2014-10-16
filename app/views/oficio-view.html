@@ -1,0 +1,57 @@
+<div ng-controller="oficioCtrl">
+
+  <div class="container">
+    <div class="four columns">
+      <p>Aqui va el logo</p>
+    </div>
+    <div class="twelve columns">
+      <h1>SODIF</h1>
+    </div>
+  </div>
+
+  <div class="menuSupercontainer">
+    <div class="container">
+        <ul class="menu">
+          <li class="menuLink five columns">Capturar oficios</li>
+          <li class="menuLink six columns">Ver oficios</li>
+          <li class="menuLink five columns">Ver gráfica</li>
+        </ul>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="eight columns">
+      <h3>Administrativo:</h3>
+      <input class="oficioInput">
+      <input class="oficioInput">
+      <input class="oficioInput">
+    </div>
+    <div class="eight columns">
+      <h3 class="ghost">Administrativo</h3>
+      <input class="oficioInput">
+      <input class="oficioInput">
+      <input class="oficioInput">
+    </div>
+    <div class="eight columns">
+      <h3>{{num}} Menores en este oficio:</h3>
+      <label> Edad: </label> <input>
+      <input>
+      <input class="oficioInput">
+      <input class="oficioInput">
+      <input class="oficioInput">
+    </div>
+    <div class="eight columns">
+      <h3 class="ghost">{{num}} Menores en este oficio:</h3>
+      <input id="addMargin" class="oficioInput">
+      <input class="oficioInput">
+    </div>
+  </div>
+
+  <div class="optionsSuperContainer">
+  <div class="container">
+    <div class="four columns"> <button>Editar oficio</button></div>
+    <div class="four columns offset-by-eight"><a href="#">Regresar</a></div>
+  </div>
+  </div>
+
+</div>

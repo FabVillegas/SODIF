@@ -1,0 +1,79 @@
+body{
+    margin: 0;
+    font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}
+
+
+/*
+LOGIN-VIEW */
+
+  #loginTitle{
+    text-align: center;
+  }
+
+  .loginContainer{
+    margin-top: 250px;
+  }
+
+  .loginInput{
+    width: 99%;
+    display: inline-block;
+  }
+
+  .loginButton{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+
+/*
+CAPTURA-VIEW
+______________________________________________ */
+  .menuSupercontainer{
+    background-color: red;
+  }
+
+  .menu{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .menuLink{
+    display: inline-block;
+    text-align: center;
+  }
+
+
+
+/*
+OFICIO-VIEW
+______________________________________________ */
+
+  .ghost{
+    visibility: hidden;
+  }
+
+  .oficioInput{
+    width: 99%;
+    padding: 1%;
+    margin: 10px 0 0 0;
+    display: inline-block;
+  }
+
+  #addMargin{
+    margin-top: 30px;
+  }
+
+  .optionsSuperContainer{
+    margin-top: 10px;
+  }
+
+/*
+GRAFICA-VIEW
+______________________________________________ */
+
+  .contentSuperContainer{
+    margin-top: 25px;
+  }
