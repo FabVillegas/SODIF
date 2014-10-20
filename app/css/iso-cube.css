@@ -45,8 +45,8 @@ __________________________________________________ */
     .container .fifteen.columns                 { width: 1105px; }
     .container .sixteen.columns                 { width: 1180px; }
 
-    .container .one-third.column                { width: 300px; }
-    .container .two-thirds.column               { width: 620px; }
+    .container .one-third.column                { width: 400px; }
+    .container .two-thirds.column               { width: 800px; }
 
     /* Offsets */
     .container .offset-by-one                   { padding-left: 75px;  }

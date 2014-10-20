@@ -1,4 +1,4 @@
-angular.module('sodif', ['ui.router']).config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+angular.module('sodif', ['ui.router', 'ngGrid']).config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 	$urlRouterProvider.otherwise('login');
 	$stateProvider.
 	state('login', {
@@ -11,10 +11,10 @@ angular.module('sodif', ['ui.router']).config(['$stateProvider', '$urlRouterProv
 		templateUrl: 'views/captura-view.html',
 		controller: 'capturaCtrl'
 	}).
-	state('oficio',{
-		url: '/oficio',
-		templateUrl: 'views/oficio-view.html',
-		controller: 'oficioCtrl'
+	state('oficios',{
+		url: '/oficios',
+		templateUrl: 'views/oficios-view.html',
+		controller: 'oficiosCtrl'
 	}).
 	state('grafica',{
 		url: '/grafica',

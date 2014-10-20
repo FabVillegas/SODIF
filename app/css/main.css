@@ -3,6 +3,82 @@ body{
     font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
 
+/* grid style*/
+.gridStyle {
+    width: 100%;
+    height: 400px;
+    margin: 25px 0 0 0;
+    border: 1px solid rgb(212,212,212);
+}
+
+
+/*
+MENU STYLE
+______________________________________________ */
+
+
+  .logo{
+    width: 100%;
+    height: auto;
+  }
+
+  .appname{
+    margin: 0;
+    position: relative;
+    top: -115px;
+    right: -35%;
+  }
+
+  .menuSupercontainer{
+    background-color: #008209;
+    border-radius: 5px;
+  }
+
+  .menu{ /* ul tag*/
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .linkContainer{
+    display: inline-block;
+    padding: 25px 0 25px 0;
+    position: relative;
+    background-color: #FFE873;
+    text-align: center;
+    border-radius: 5px;
+  }
+
+  .linkContainer:hover{
+    background-color: #FFDF40;
+  }
+
+  .menuLink:link, a:visited {
+      color: (internal value);
+      text-decoration: none;
+  }
+
+  a:link:active, a:visited:active {
+      color: (internal value);
+  }
+
+
+  .linkSpan{
+    position:absolute;
+    width:100%;
+    height:100%;
+    top:0;
+    left: 0;
+    z-index: 1;
+  }
+
+  .selected{
+    background-color: #FFD500;
+  }
+
+
+
+
 
 /*
 LOGIN-VIEW */
@@ -30,20 +106,13 @@ LOGIN-VIEW */
 /*
 CAPTURA-VIEW
 ______________________________________________ */
-  .menuSupercontainer{
-    background-color: red;
-  }
 
-  .menu{
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
 
-  .menuLink{
-    display: inline-block;
-    text-align: center;
-  }
+
+
+/*
+OFICIOS-VIEW
+______________________________________________ */
 
 
 

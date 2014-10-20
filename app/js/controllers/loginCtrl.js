@@ -4,6 +4,6 @@ loginCtrl.$inject = ['$scope', '$state'];
 
 function loginCtrl($scope, $state){
   $scope.login = function(){
-    $state.go('oficio');
+    $state.go('oficios');
   };
 };
