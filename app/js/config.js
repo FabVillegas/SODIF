@@ -1,4 +1,4 @@
-angular.module('sodif', ['ui.router', 'ngGrid']).config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+angular.module('sodif', ['ui.router', 'ngGrid', 'angularCharts']).config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 	$urlRouterProvider.otherwise('login');
 	$stateProvider.
 	state('login', {

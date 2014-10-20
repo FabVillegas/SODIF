@@ -4,15 +4,19 @@ oficiosCtrl.$inject = ['$scope', '$state'];
 
 function oficiosCtrl($scope, $state){
 
-  $scope.goOficios = function(){
-    state.go('oficios');
+  $scope.foo = function(){
+    alert("This is a test");
+  };
+
+  $scope.goGrafica = function(){
+    $state.go("grafica");
   };
 
   $scope.gridOptions = {
     data: 'myData',
     enablePinning: true,
     columnDefs: [
-      { field: "Folio", width: 100, pinned: true },
+      { field: "Folio", width: 100, pinned: true, cellTemplate: '<div  ng-click="foo()" ng-bind="row.getProperty(col.field)"></div>' },
       { field: "Oficio", width: 100, pinned: true },
       { field: "Autoridad", width: 150 },
       { field: "TipoDeJuzgado", width: 150 },

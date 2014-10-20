@@ -1,41 +1,32 @@
-<div ng-controller="oficioCtrl">
+<div ng-controller="graficaCtrl">
 
   <div class="container">
-    <div class="four columns">
-      <p>Aqui va el logo</p>
-    </div>
-    <div class="twelve columns">
-      <h1>SODIF</h1>
+    <div class="sixteen columns">
+      <img class="logo" src="css/images/logoDIFNL.jpg">
+      <h1 class="appname"> Sistema de Oficios del DIF </h1>
     </div>
   </div>
 
   <div class="menuSupercontainer">
     <div class="container">
         <ul class="menu">
-          <li class="menuLink five columns">Capturar oficios</li>
-          <li class="menuLink six columns">Ver oficios</li>
-          <li class="menuLink five columns">Ver gráfica</li>
+          <li class="linkContainer one-third column">
+            <a class="menuLink" href="#oficios"> <span class="linkSpan"></span> Capturar oficios </a>
+          </li>
+          <li class="linkContainer one-third column">
+            <a class="menuLink" href="#"> <span class="linkSpan"></span> Ver oficios </a>
+          </li>
+          <li class="selected linkContainer one-third column">
+            <a class="menuLink" href="" > <span class="linkSpan"></span> Ver gráfica </a>
+          </li>
         </ul>
     </div>
   </div>
 
-<div class="contentSuperContainer">
   <div class="container">
-    <div class="four columns">
-      <input>
-    </div>
-    <div class="four columns">
-      <input>
-    </div>
-    <div class="four columns">
-      <input>
-    </div>
-    <div class="four columns">
-      <input>
+    <div class="sixteen columns">
+      <div data-ac-chart="'bar'" data-ac-data="data" data-ac-config="config" class="chart"></div>    
     </div>
   </div>
-
-</div>
-
 
 </div>
