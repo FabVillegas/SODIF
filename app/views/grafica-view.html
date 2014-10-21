@@ -11,10 +11,10 @@
     <div class="container">
         <ul class="menu">
           <li class="linkContainer one-third column">
-            <a class="menuLink" href="#oficios"> <span class="linkSpan"></span> Capturar oficios </a>
+            <a class="menuLink" href="" ng-click="goCaptura()"> <span class="linkSpan"></span> Capturar oficios </a>
           </li>
           <li class="linkContainer one-third column">
-            <a class="menuLink" href="#"> <span class="linkSpan"></span> Ver oficios </a>
+            <a class="menuLink" href="" ng-click="goOficios()"> <span class="linkSpan"></span> Ver oficios </a>
           </li>
           <li class="selected linkContainer one-third column">
             <a class="menuLink" href="" > <span class="linkSpan"></span> Ver gráfica </a>
@@ -24,8 +24,58 @@
   </div>
 
   <div class="container">
-    <div class="sixteen columns">
-      <div data-ac-chart="'bar'" data-ac-data="data" data-ac-config="config" class="chart"></div>    
+
+    <div class="parametersContainer eight columns">
+      <label>Mostrar por  :</label>
+      <select>
+      	<option value="Autoridad">Autoridad</option>
+      	<option value="Tipo de juzgado">Tipo de juzgado</option>
+      	<option value="Municipio">Municipio</option>
+      </select>
+      <label>Tipo de gráfica :</label>
+      <select ng-model="chart" ng-change="selectChartType()">
+        <option value="bar">Barras</option>
+        <option value="pie">Pay</option>
+        <option value="line">Líneas</option>
+        <option value="point">Puntos</option>
+        <option value="area">Área</option>
+      </select>
+    </div>
+
+    <div class="parametersContainer eight columns">
+      <label>Entre :</label>
+      <script>
+
+        var minDate;
+
+        $('.datepickerBegin').pickadate({
+          onClose: function() {
+            minDate = this.get('highlight');
+          },
+          today: 'Hoy',
+          clear: 'Cancelar',
+          close: 'Cerrar',
+          monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+          weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
+          formatSubmit: 'yyyy/mm/dd'
+        });
+
+        $('.datepickerEnd').pickadate({
+          min: [2014,9,20],
+          today: 'Hoy',
+          clear: 'Cancelar ',
+          monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+          weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
+          formatSubmit: 'yyyy/mm/dd'
+        });
+      </script>
+      <input class="datepickerBegin" ng-model="beginDate">
+      <label> y </label>
+      <input class="datepickerEnd" ng-model="endDate">
+    </div>
+
+    <div class="chartContainer sixteen columns">
+      <div data-ac-chart="chartType" data-ac-data="data" data-ac-config="config" class="chart"></div>
     </div>
   </div>
 

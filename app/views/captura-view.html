@@ -1,22 +1,161 @@
 <div ng-controller="capturaCtrl">
+
   <div class="container">
-    <div class="four columns">
-      <p>Aqui va el logo</p>
-    </div>
-    <div class="twelve columns">
-      <h1>SODIF</h1>
-    </div>
     <div class="sixteen columns">
-      <ul class="menu">
-        <li class="menuLink">Capturar oficios</li>
-        <li class="menuLink">Ver oficios</li>
-        <li class="menuLink">Ver gráfica</li>
-      </ul>
+      <img class="logo" src="css/images/logoDIFNL.jpg">
+      <h1 class="appname"> Sistema de Oficios del DIF </h1>
     </div>
   </div>
-  <div class="container">
-    <div class="one column offset-by-fifteen">
-      <a>Guardar Oficio</a>
+
+  <div class="menuSupercontainer">
+    <div class="container">
+        <ul class="menu">
+          <li class="selected linkContainer one-third column">
+            <a class="menuLink" href="#"> <span class="linkSpan"></span> Capturar oficios </a>
+          </li>
+          <li class="linkContainer one-third column">
+            <a class="menuLink" href="" ng-click="goOficios()"> <span class="linkSpan"></span> Ver oficios </a>
+          </li>
+          <li class="linkContainer one-third column">
+            <a class="menuLink" href="" ng-click="goGrafica()"> <span class="linkSpan"></span> Ver gráfica </a>
+          </li>
+        </ul>
     </div>
   </div>
+
+  <div class="capturaSuperContainer">
+    <div id="administrativoContainer" class="container">
+      <div class="sixteen columns">
+        <h2>Administrativo : </h2>
+      </div>
+
+      <div class="sixteen columns">
+        <label class="capturaLabel">Fecha :</label>
+        <script>
+          $('.datepicker').pickadate({
+            today: 'Hoy',
+            clear: 'Cancelar',
+            close: 'Cerrar',
+            monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
+            formatSubmit: 'yyyy/mm/dd'
+          });
+        </script>
+        <input class="capturaDate datepicker" ng-model="beginDate">
+      </div>
+
+      <div class="eight columns">
+        <input class="capturaInput" type="text" placeholder="Folio de oficio">
+        <select class="capturaDropdown">
+          <option selected disabled>Autoridad Correspondiente</option>
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+        <select class="capturaDropdown">
+          <option selected disabled>Tipo de Juzgado</option>
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+      </div>
+      <div class="eight columns">
+        <select class="capturaDropdown">
+          <option selected disabled>Juicio</option>
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+        <select class="capturaDropdown">
+          <option selected disabled>Municipio</option>
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+        <select class="capturaDropdown">
+          <option selected disabled>Servicio Encargado</option>
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="menorContainer" class="container">
+      <div class="sixteen columns">
+        <label id="subtitulo">Menores en este oficio :</label>
+        <select class="menorDropdown">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+      </div>
+
+      <div class="sixteen columns">
+        <label>Edad :</label>
+          <select class="menorDropdown">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+          <select class="menorDropdown">
+            <option selected disabled> Sexo: </option>
+            <option>Femenino</option>
+            <option>Masculino</option>
+          </select>
+        </div>
+
+        <div class="eight columns">
+          <input class="menorInput" type="text" placeholder="Nombre(s)">
+          <input class="menorInput" type="text" placeholder="Apellido paterno">
+          <input class="menorInput" type="text" placeholder="Apellido materno">
+        </div>
+
+        <div class="eight columns">
+          <select class="capturaDropdown">
+            <option selected disabled>Asistencia a Juicio</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+          <select class="capturaDropdown">
+            <option selected disabled>Evaluación de capacidad</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+        </div>
+        <div id="descripcionContainer" class="sixteen columns">
+          <input class="descripcion" type="text" placeholder="Descripción del oficio">
+        </div>
+    </div>
+
+    <div id="submitContainer" class="container">
+      <div class="sixteen columns">
+      <button class="guardarCaptura" type="submit">Guardar oficio</button>
+      <a class="borrarCaptura" href="#">Borrar todo</a>
+      </div>
+    </div>
+
+  </div>
+
+
 </div>

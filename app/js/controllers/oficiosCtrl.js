@@ -4,6 +4,10 @@ oficiosCtrl.$inject = ['$scope', '$state'];
 
 function oficiosCtrl($scope, $state){
 
+  $scope.goCaptura = function(){
+    $state.go('captura');
+  };
+
   $scope.foo = function(){
     alert("This is a test");
   };
