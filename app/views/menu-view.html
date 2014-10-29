@@ -1,0 +1,31 @@
+<div ng-controller="menuCtrl">
+
+  <div class="container">
+    <div class="sixteen columns">
+      <button ng-click="logout()" class="logoutButton" type="submit">Cerrar Sesión</button>
+    </div>
+    <div class="four columns">
+      <img class="logo" src="css/images/logoDIFNL.jpg">
+    </div>
+    <div class="twelve columns">
+      <h1 class="appname"> Sistema de Oficios de Procuraduría de Defensa del Menor y la Familia</h1>
+    </div>
+  </div>
+
+  <div class="menuSupercontainer">
+    <div class="container">
+        <ul class="menu">
+          <li class="linkContainer one-third column" ng-class="{'selected': capturaView}">
+            <a class="menuLink" href="" ng-click="goCaptura()"> <span class="linkSpan"></span> Capturar oficios </a>
+          </li>
+          <li class="linkContainer one-third column" ng-class="{'selected': oficiosView}">
+            <a class="menuLink" href="" ng-click="goOficios()"> <span class="linkSpan"></span> Ver oficios </a>
+          </li>
+          <li class="linkContainer one-third column" ng-class="{'selected': graficaView}">
+            <a class="menuLink" href="" ng-click="goGrafica()"> <span class="linkSpan"></span> Ver gráfica </a>
+          </li>
+        </ul>
+    </div>
+  </div>
+
+</div>

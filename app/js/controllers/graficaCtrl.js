@@ -4,6 +4,7 @@ graficaCtrl.$inject = ['$scope', '$state'];
 
 function graficaCtrl($scope, $state){
 
+
   $scope.showDate = function(){
     alert($scope.beginDate);
   };

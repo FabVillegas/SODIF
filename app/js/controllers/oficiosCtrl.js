@@ -4,6 +4,12 @@ oficiosCtrl.$inject = ['$scope', '$state'];
 
 function oficiosCtrl($scope, $state){
 
+  $scope.foos = [
+    {value: 'eq', displayName: 'equals'},
+    {value: 'neq', displayName: 'not equal'}
+  ];
+
+
   $scope.goCaptura = function(){
     $state.go('captura');
   };

@@ -2,30 +2,29 @@
 
   <div class="container">
     <div class="sixteen columns">
-      <img class="logo" src="css/images/logoDIFNL.jpg">
-      <h1 class="appname"> Sistema de Oficios del DIF </h1>
+      <label>Año:</label>
+      <select>
+        <option ng-repeat="foo in foos" value="{{foo.value}}">{{foo.name}}</option>
+      </select>
+      <label>Mes:</label>
+      <select>
+        <option>Enero</option>
+        <option>Febrero</option>
+        <option>Marzo</option>
+        <option>Abril</option>
+        <option>Mayo</option>
+        <option>Junio</option>
+        <option>Julio</option>
+        <option>Agosto</option>
+        <option>Septiembre</option>
+        <option>Octubre</option>
+        <option>Noviembre</option>
+        <option>Diciembre</option>
+      </select>
     </div>
-  </div>
 
-  <div class="menuSupercontainer">
-    <div class="container">
-        <ul class="menu">
-          <li class="linkContainer one-third column">
-            <a class="menuLink" href="" ng-click="goCaptura()"> <span class="linkSpan"></span> Capturar oficios </a>
-          </li>
-          <li class="selected linkContainer one-third column">
-            <a class="menuLink" href="#"> <span class="linkSpan"></span> Ver oficios </a>
-          </li>
-          <li class="linkContainer one-third column">
-            <a class="menuLink" href="" ng-click="goGrafica()"> <span class="linkSpan"></span> Ver gráfica </a>
-          </li>
-        </ul>
-    </div>
-  </div>
-
-  <div class="container">
     <div class="sixteen columns">
-      <div class="gridStyle" ng-grid="gridOptions"></div>
+      <div class="gridStyle" ng-grid="gridOptions"> </div>
     </div>
   </div>
 

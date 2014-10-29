@@ -2,11 +2,15 @@
 
   <div class="container">
 
+  <script type="text/ng-template" id="errorMessage">
+    <h2>Datos mal escritos. Favor de verificar usuario y contraseña.</h2>
+  </script>
+
     <div class="loginContainer six columns offset-by-five">
-      <h1 id="loginTitle">Inicie sesión</h1>
-      <input class="loginInput" type="text" placeholder="Correo Electrónico" />
-      <input class="loginInput" type="password" placeholder="Contraseña">
-      <button class="loginButton" type="submit" ng-click="login()">Iniciar</button>
+      <h1 id="loginTitle">Iniciar sesión</h1>
+      <input ng-model="user.name" class="loginInput" type="text" placeholder="Correo electrónico" />
+      <input ng-model="user.password" class="loginInput" type="password" ng-enter="login()" placeholder="Contraseña">
+      <button class="loginButton" type="submit" ng-click="login()">Entrar</button>
     </div>
 
   </div>

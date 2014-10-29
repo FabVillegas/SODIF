@@ -1,52 +1,42 @@
 <!DOCTYPE html>
 <html ng-app="sodif">
 	<head>
+		<meta charset="UTF-8">
 		<!-- STYLES-->
-		  <link rel="stylesheet" type="text/css" href="css/main.css" />
-			<link rel="stylesheet" type="text/css" href="css/skeleton.css" />
-			<link rel="stylesheet" type="text/css" href="../bower_components/ng-cells/dist/0.3.7/ng-cells.css" />
-			<link rel="stylesheet" type="text/css" href="../bower_components/ng-grid/ng-grid.css" />
-			<link rel="stylesheet" type="text/css" href="../bower_components/angular-datepicker/dist/index.css" />
-			<link rel="stylesheet" type="text/css" href="../bower_components/angular-native-picker/build/themes/classic.css" />
-			<link rel="stylesheet" type="text/css" href="../bower_components/angular-native-picker/build/themes/classic.date.css" />
-
-			<link rel="stylesheet" type="text/css" href="../bower_components/datepicker/classic.css" />
-			<link rel="stylesheet" type="text/css" href="../bower_components/datepicker/classic.date.css" />
+		  <link rel="stylesheet" type="text/css" href="css/main.css">
+			<link rel="stylesheet" type="text/css" href="css/skeleton.css">
+			<link rel="stylesheet" type="text/css" href="../bower_components/ng-grid/ng-grid.css">
+			<link rel="stylesheet" type="text/css" href="../bower_components/datepicker/classic.css">
+			<link rel="stylesheet" type="text/css" href="../bower_components/datepicker/classic.date.css" >
+			<link rel="stylesheet" type="text/css" href="../bower_components/ngDialog/css/ngDialog.min.css" >
+			<link rel="stylesheet" type="text/css" href="css/ngDialog-theme-so.css" >
 
 		<!-- JQUERY -->
 			<script src="../bower_components/jquery/dist/jquery.min.js"></script>
-
-
-<script src="../bower_components/datepicker/picker.js"></script>
-<script src="../bower_components/datepicker/picker.date.js"></script>
-
-
-
-
+			<script src="../bower_components/datepicker/picker.js"></script>
+			<script src="../bower_components/datepicker/picker.date.js"></script>
 		<!-- D3 -->
 			<script src="../bower_components/d3/d3.min.js"></script>
 		<!-- ANGULAR -->
 			<script src="../bower_components/angular/angular.min.js"></script>
 			<script src="../bower_components/ng-grid/build/ng-grid.min.js"></script>
-			<script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-			<script src="../bower_components/angular-sanitize/angular-sanitize.min.js"></script>
 			<script src="../node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
-			<script src="../bower_components/ng-cells/dist/0.3.7/ng-cells.min.js"></script>
 			<script src="../bower_components/angular-charts/dist/angular-charts.min.js"></script>
-			<script src="../bower_components/angular-datepicker/dist/index.js"></script>
-			<script src="../bower_components/angular-native-picker/build/angular-datepicker.js"></script>
-
-
-
+			<script src="../bower_components/angular-animate/angular-animate.min.js"></script>
+			<script src="../bower_components/ngDialog/js/ngDialog.min.js"></script>
 		<!-- FIREBASE -->
-		  <script src="https://cdn.firebase.com/js/client/1.0.17/firebase.js"></script>
+		  <script src="../bower_components/firebase/firebase.js"></script>
+			<script src="../bower_components/firebase-simple-login/firebase-simple-login.js"></script>
 		<!-- ANGULARFIRE -->
-		  <script src="https://cdn.firebase.com/libs/angularfire/0.8.0/angularfire.js"></script>
+		  <script src="../bower_components/angularfire/dist/angularfire.min.js"></script>
 		<!-- CONFIG -->
 		  <script src="js/config.js"></script>
 		<!-- DIRECTIVES -->
+			<script src="js/directives/ngEnter.js"></script>
 		<!-- FACTORIES -->
+			<script src="js/factories/firebaseRefFactory.js"></script>
 		<!-- CONTROLLERS -->
+			<script src="js/controllers/menuCtrl.js"></script>
 			<script src="js/controllers/loginCtrl.js"></script>
 			<script src="js/controllers/capturaCtrl.js"></script>
 			<script src="js/controllers/oficiosCtrl.js"></script>
@@ -54,6 +44,7 @@
 			<script src="js/controllers/secondCtrl.js"></script>
 	</head>
 	<body>
-		<div ui-view></div>
+		<div ui-view="menu"></div>
+		<div ui-view="body"></div>
 	</body>
 </html>
