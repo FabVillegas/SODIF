@@ -27,14 +27,25 @@ module.exports = function(grunt) {
         ext: '.min.css'   // replace .js to .min.js
       }
     },
+    obfuscator: {
+      files: [
+        'app/js/**/*.js'
+      ],
+      entry: 'app.js',
+      out: 'build/*.js',
+      strings: true,
+      root: __dirname
+    }
   });
 
   // Load the plugins.
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-obfuscator');
 
   // Default task(s).
   grunt.registerTask('minjs', ['uglify']);
   grunt.registerTask('mincss', ['cssmin']);
+  grunt.registerTask('obfusjs', ['obfuscator']);
 
 };

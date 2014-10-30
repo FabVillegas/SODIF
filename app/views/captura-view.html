@@ -184,7 +184,7 @@
       <div class="menorContainer sixteen columns">
         <input ng-model="menor.edad" class="menorDropdown" type="text" placeholder="Edad">
         <select ng-model="menor.sexo" class="menorDropdown">
-          <option selected disabled> Sexo: </option>
+          <option selected disabled> Sexo </option>
           <option>Femenino</option>
           <option>Masculino</option>
         </select>
@@ -202,7 +202,7 @@
           <option>Si</option>
           <option>No</option>
         </select>
-        <select class="capturaDropdown animate-if" ng-if="menor.respuesta == 'No'">
+        <select ng-model="menor.motivo" class="capturaDropdown animate-if" ng-if="menor.respuesta == 'No'">
           <option selected disabled>Motivos de la negativa</option>
           <option>No hay personal disponible.</option>
           <option>La petición llegó a destiempo.</option>

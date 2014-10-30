@@ -1,27 +1,64 @@
 angular.module('sodif').controller('oficiosCtrl', oficiosCtrl);
 
-oficiosCtrl.$inject = ['$scope', '$state'];
+oficiosCtrl.$inject = ['$scope', '$firebase', '$state', 'firebaseRefFactory'];
 
-function oficiosCtrl($scope, $state){
-
-  $scope.foos = [
-    {value: 'eq', displayName: 'equals'},
-    {value: 'neq', displayName: 'not equal'}
-  ];
+function oficiosCtrl($scope, $firebase, $state, firebaseRefFactory){
 
 
-  $scope.goCaptura = function(){
-    $state.go('captura');
+  $scope.myData = [];
+  var testRef = $firebase(new Firebase('https://sistema-de-oficios.firebaseio.com/test')).$asArray();
+
+  testRef.$loaded().then(function() {
+    console.log(testRef);
+  });
+
+
+  // variables auxiliares
+  var currentYear = new Date().getFullYear();
+  $scope.years = [];
+  $scope.oficios = [];
+  $scope.selectedYear = currentYear.toString();
+
+
+  $scope.getYears = function(){
+    var yearsRef = $firebase(new Firebase(firebaseRefFactory.getYearsRef())).$asArray();
+    yearsRef.$watch(function(child_added){
+      $scope.years.push({
+        key: child_added.key
+      });
+    });
   };
 
-  $scope.foo = function(){
-    alert("This is a test");
+  $scope.getOficios = function(){
+    $scope.elementos = $firebase(new Firebase('https://sistema-de-oficios.firebaseio.com/oficios/2014/Octubre')).$asArray();
+    $scope.elementos.$loaded().then(function(){
+      $scope.myData =  $scope.elementos;
+    });
+    console.log($scope.elementos);
   };
 
-  $scope.goGrafica = function(){
-    $state.go("grafica");
+  $scope.gridOptions = {
+    data: 'myData',
+    enablePinning: true,
+    columnDefs: [
+      { field: "areaDeServicio", width: 100, pinned: true, cellTemplate: '<div  ng-click="foo()" ng-bind="row.getProperty(col.field)"></div>' },
+      { field: "autoridad", width: 100, pinned: true },
+      { field: "descripcion", width: 150 },
+      { field: "fecha", width: 150 },
+      { field: "municipio", width: 150 },
+      { field: "numero", width: 150 },
+      { field: "servicio", width: 150 },
+      { field: "tipoDeJuicio", width: 150 },
+      { field: "tipoDeServicio", width: 150 },
+      { field: "tipoJuzgado", width: 150 }
+    ],
+    filterOptions: {filterText: '', useExternalFilter: false},
+    showFilter: true
   };
 
+
+
+  /*
   $scope.gridOptions = {
     data: 'myData',
     enablePinning: true,
@@ -65,7 +102,11 @@ function oficiosCtrl($scope, $state){
     { Folio: "05667", Oficio: "477/2014", Autoridad: "P.J.F.", TipoDeJuzgado: "Penales", Juzgado: "JP03", TipoDeServicio: "Asistencias", Servicios: "Coadyuvancia", Municipio: "Monterrey", TipoDeJuicio: "Causa Penal", AreaDeServicio: "Legal"},
     { Folio: "05668", Oficio: "478/2014", Autoridad: "P.J.F.", TipoDeJuzgado: "Penales", Juzgado: "JP03", TipoDeServicio: "Asistencias", Servicios: "Coadyuvancia", Municipio: "Monterrey", TipoDeJuicio: "Causa Penal", AreaDeServicio: "Legal"},
     { Folio: "05669", Oficio: "479/2014", Autoridad: "P.J.F.", TipoDeJuzgado: "Penales", Juzgado: "JP03", TipoDeServicio: "Asistencias", Servicios: "Coadyuvancia", Municipio: "Monterrey", TipoDeJuicio: "Causa Penal", AreaDeServicio: "Legal"}
-  ];
+  ];*/
+
+
+  // Metodos al iniciar la vista
+  $scope.getYears();
 
 
 };

@@ -4,8 +4,16 @@ angular.module('sodif').factory('firebaseRefFactory', function(){
 			var url = 'https://sistema-de-oficios.firebaseio.com/';
 			return url;
 		},
+		getOficiosRef: function(year){
+			var url = 'https://sistema-de-oficios.firebaseio.com/oficios/' + year + '/';
+			return url;
+		},
 		getRefToSave: function(month,year){
-			var url = 'https://sistema-de-oficios.firebaseio.com/' + year + '/' + month + '/';
+			var url = 'https://sistema-de-oficios.firebaseio.com/oficios/' + year + '/' + month + '/';
+			return url;
+		},
+		getYearsRef: function(){
+			var url = 'https://sistema-de-oficios.firebaseio.com/oficios';
 			return url;
 		}
 	};

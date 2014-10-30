@@ -3,9 +3,9 @@
   <div class="container">
     <div class="sixteen columns">
       <label>Año:</label>
-      <select>
-        <option ng-repeat="foo in foos" value="{{foo.value}}">{{foo.name}}</option>
-      </select>
+       <select ng-model="selectedYear" ng-change="getOficios()">
+         <option ng-repeat="year in years">{{year.key}}</option>
+       </select>
       <label>Mes:</label>
       <select>
         <option>Enero</option>
