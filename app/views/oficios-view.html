@@ -1,31 +1,22 @@
 <div ng-controller="oficiosCtrl">
 
-  <div class="container">
+  <div id="tablaOficios" class="container">
+
     <div class="sixteen columns">
-      <label>Año:</label>
-       <select ng-model="selectedYear" ng-change="getOficios()">
-         <option ng-repeat="year in years">{{year.key}}</option>
-       </select>
-      <label>Mes:</label>
-      <select>
-        <option>Enero</option>
-        <option>Febrero</option>
-        <option>Marzo</option>
-        <option>Abril</option>
-        <option>Mayo</option>
-        <option>Junio</option>
-        <option>Julio</option>
-        <option>Agosto</option>
-        <option>Septiembre</option>
-        <option>Octubre</option>
-        <option>Noviembre</option>
-        <option>Diciembre</option>
+      <select ng-model="selectedYear" ng-change="getMonths()">
+        <option value="" disabled>Años</option>
+        <option ng-repeat="year in years">{{year.key}}</option>
+      </select>
+      <select ng-model="selectedMonth" ng-change="getOficios()">
+        <option value="" disabled>Mes</option>
+        <option ng-repeat="month in months">{{month.key}}</option>
       </select>
     </div>
 
     <div class="sixteen columns">
       <div class="gridStyle" ng-grid="gridOptions"> </div>
     </div>
+
   </div>
 
 </div>

@@ -65,6 +65,22 @@ config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRou
 		resolve:{
 			checkLogin: isLoggedIn // function that returns a promise
 		}
+	}).
+	state('oficio',{
+		url: '/oficios/:year/:month/:numero',
+		views:{
+			menu:{
+				templateUrl: 'views/menu-view.html',
+				controller: 'menuCtrl'
+			},
+			body:{
+				templateUrl: 'views/oficio-view.html',
+				controller: 'oficioCtrl'
+			}
+		},
+		resolve:{
+			checkLogin: isLoggedIn // function that returns a promise
+		}
 	});
 }]);
 

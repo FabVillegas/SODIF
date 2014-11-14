@@ -1,34 +1,26 @@
 angular.module('sodif').controller('capturaCtrl', capturaCtrl);
 
-capturaCtrl.$inject = ['$scope', '$firebase', '$state', 'firebaseRefFactory', 'ngDialog'];
+capturaCtrl.$inject = ['$scope', '$firebase', '$state', 'firebaseRefFactory', 'divideDateFactory', 'ngDialog'];
 
-function capturaCtrl($scope, $firebase, $state,firebaseRefFactory, ngDialog){
+function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, divideDateFactory,ngDialog){
 
-  // Funciones auxiliares
-  var getMonth = function(fecha){
-    var x;
-    for(i = 3; i < fecha.length - 1; i++){
-      if(fecha.substring(i,i+1) == ' ')
-        x = i;
-    }
-    var y = fecha.substring(3,x);
-    return y;
-  };
+  // Variables auxiliares
+  $scope.itExists = -1;
+  $scope.oficiosList = [];
 
-  var getYear = function(fecha){
-    var x = fecha.substring(fecha.length - 4, fecha.length);
-    return x;
+  $scope.erase = function(){
+    $scope.oficio.tipoJuzgado = '';
   };
 
   // Instanciar objeto Oficio
   $scope.oficio = {
-    autoridad : 'Autoridad correspondiente',
-    tipoJuzgado : 'Tipo de Juzgado',
-    tipoDeJuicio : 'Tipo de Juicio',
-    municipio : 'Municipio',
-    servicio : 'Servicio',
-    areaDeServicio : 'Area de Servicio',
-    tipoDeServicio : 'Tipo de Servicio',
+    autoridad: '',
+    tipoJuzgado : '',
+    tipoDeJuicio : '',
+    municipio : '',
+    servicio : '',
+    areaDeServicio : '',
+    tipoDeServicio : '',
     menores: []
   };
 
@@ -58,16 +50,18 @@ function capturaCtrl($scope, $firebase, $state,firebaseRefFactory, ngDialog){
   };
 
 
-  $scope.guardar = function(){
+  $scope.save = function(){
     if($scope.oficio.fecha == undefined || $scope.oficio.numero == undefined){
       ngDialog.open({
         template: 'alertMessage'
       });
     }
     else{
-      var month = getMonth($scope.oficio.fecha);
-      var year = getYear($scope.oficio.fecha);
-      var ref = $firebase(new Firebase(firebaseRefFactory.getRefToSave(month,year)));
+      // guardar a capturas por año y mes
+      var capturaRef = $firebase(new Firebase(firebaseRefFactory.getRefToSave(divideDateFactory.getYear($scope.oficio.fecha),divideDateFactory.getMonth($scope.oficio.fecha))));
+      capturaRef.$set($scope.oficio.numero, true);
+      // guardar a oficios en general
+      var ref = $firebase(new Firebase('https://sistema-de-oficios.firebaseio.com/oficios'));
       ref.$set($scope.oficio.numero, $scope.oficio);
 
       ngDialog.open({
@@ -101,5 +95,25 @@ function capturaCtrl($scope, $firebase, $state,firebaseRefFactory, ngDialog){
 
     $scope.listaMenores = [];
   };
+
+
+
+  $scope.fillList = function(){
+    var toCheckList = $firebase(new Firebase('https://sistema-de-oficios.firebaseio.com/oficios')).$asArray();
+    toCheckList.$loaded().then(function(){
+      $scope.oficiosList = toCheckList;
+    });
+  };
+
+  // ng-change methods
+  $scope.isOficio = function(){
+    $scope.itExists = $scope.oficiosList.$indexFor($scope.oficio.numero);
+    if($scope.itExists != -1)
+      $scope.disableStyle = {'background-color':'grey', 'border-color':'black'};
+    else
+      $scope.disableStyle = {};
+  };
+
+  $scope.fillList();
 
 };
