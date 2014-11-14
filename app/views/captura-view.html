@@ -1,5 +1,4 @@
 <div ng-controller="capturaCtrl">
-
   <div id="administrativo" class="container">
     <div class="sixteen columns">
       <h2 class="titulo" >Administrativo : </h2>
@@ -220,7 +219,7 @@
       <div class="menorContainer sixteen columns">
         <input ng-model="menor.edad" class="menorDropdown" type="text" placeholder="Edad">
         <select ng-model="menor.sexo" class="menorDropdown">
-          <option selected disabled> Sexo </option>
+          <option value="" disabled> Sexo </option>
           <option>Femenino</option>
           <option>Masculino</option>
         </select>
@@ -263,7 +262,7 @@
       <button ng-click="save()" ng-enter="closeDialog()" ng-disabled="itExists != -1" class="guardarCaptura" ng-style="disableStyle" type="submit">Guardar oficio</button>
     </div>
     <div class="three columns offset-by-nine">
-      <a ng-click="cleanInputs()" class="borrarCaptura" href="">Borrar todo</a>
+      <button ng-click="cleanInputs()" class="borrarCaptura" type="submit">Borrar todo</button>
     </div>
   </div>
 

@@ -80,17 +80,16 @@ ______________________________________________ */
     width: 15%;
     margin: 10px 0 0 85%;
     padding: 4px 0 4px 0;
-    background-color: #70B44A;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-bottom: 3px solid #002D00;
+    background: none;
+    border: none;
     font-size: 1em;
-    color: white;
+    font-weight: bolder;
+    color: #70B44A;
+    cursor: pointer;
   }
 
   .logoutButton:hover{
-    background-color: #002D00;
+    text-decoration: underline;
   }
 
 
@@ -275,16 +274,17 @@ ______________________________________________ */
     background-color: #002D00;
   }
 
-  .borrarCaptura:link, .borrarCaptura:visited {
+  .borrarCaptura{
+    width: 100%;
+    margin: 0;
+    padding: 0;
     color: #70B44A;
+    background: none;
+    border: none;
     font-family: 'Arial';
     font-weight: bold;
     font-size: 1.5em;
     text-decoration: none;
-  }
-
-  .borrarCaptura:link:active, .borrarCaptura:visited:active {
-    color: #70B44A;
   }
 
   .borrarCaptura:hover{
@@ -313,6 +313,10 @@ ______________________________________________ */
 
   .eraseMenor:hover{
     color: #002D00;
+  }
+
+  .warning{
+    color: #70B44A;
   }
 
 /*

@@ -2,7 +2,7 @@ angular.module('sodif').controller('capturaCtrl', capturaCtrl);
 
 capturaCtrl.$inject = ['$scope', '$firebase', '$state', 'firebaseRefFactory', 'divideDateFactory', 'ngDialog'];
 
-function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, divideDateFactory,ngDialog){
+function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, divideDateFactory, ngDialog){
 
   // Variables auxiliares
   $scope.itExists = -1;
@@ -39,7 +39,7 @@ function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, divideDateFa
     });
   };
 
-  // agregar menor de lista a arreglo de objectos menores
+  // agregar menor de lista a arreglo de objetos menores
   $scope.addMenorToMenores = function(index){
     $scope.oficio.menores.push($scope.listaMenores[index]);
     $scope.listaMenores.splice(index, 1);
@@ -95,8 +95,6 @@ function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, divideDateFa
 
     $scope.listaMenores = [];
   };
-
-
 
   $scope.fillList = function(){
     var toCheckList = $firebase(new Firebase('https://sistema-de-oficios.firebaseio.com/oficios')).$asArray();
