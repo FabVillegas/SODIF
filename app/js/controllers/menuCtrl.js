@@ -1,8 +1,8 @@
 angular.module('sodif').controller('menuCtrl', menuCtrl);
 
-menuCtrl.$inject = ['$scope', '$firebase', '$firebaseSimpleLogin', '$state', '$location', 'firebaseRefFactory'];
+menuCtrl.$inject = ['$scope', '$firebase', '$firebaseAuth', '$state', '$location', 'firebaseRefFactory'];
 
-function menuCtrl($scope, $firebase, $firebaseSimpleLogin, $state, $location, firebaseRefFactory){
+function menuCtrl($scope, $firebase, $firebaseAuth, $state, $location, firebaseRefFactory){
 
 
   var checkSelectedLink = function(path){
@@ -35,10 +35,10 @@ function menuCtrl($scope, $firebase, $firebaseSimpleLogin, $state, $location, fi
 
   $scope.logout = function(){
     var dataRef = new Firebase(firebaseRefFactory.getMainRef());
-    $scope.loginObj = $firebaseSimpleLogin(dataRef);
+    $scope.loginObj = $firebaseAuth(dataRef);
     console.log("Logged out:");
-    console.log($scope.loginObj.$getCurrentUser());
-    $scope.loginObj.$logout();
+    console.log($scope.loginObj.$getAuth());
+    $scope.loginObj.$unauth()
     $state.go('login');
   };
 };

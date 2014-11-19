@@ -1,0 +1,60 @@
+<div ng-controller="graficaCtrl">
+  <script type="text/ng-template" id="alertMessage"><h2>Verificar que se llenaron las fechas.</h2></script>
+
+  <div class="container">
+    <div class="parametersContainer eight columns">
+      <div ng-if="!!graficaDatos.beginDate"><label>Mostrar por  :</label>
+      <select ng-model="graficaDatos.tipo" ng-change="guardar()">
+      	<option value="Autoridad">Autoridad</option>
+      	<option value="Juzgado">Tipo de juzgado</option>
+        <option value="Juicio">Tipo de juicio</option>
+        <option value="Municipio">Municipio</option>
+        <option value="Menores">Menores</option>
+        <option value="Oficios">Oficios</option>
+      </select>
+      <label>Tipo de gráfica :</label>
+      <select ng-model="chart" ng-change="selectChartType()">
+        <option value="bar">Barras</option>
+        <option value="pie">Pay</option>
+        <option value="line">Líneas</option>
+        <option value="point">Puntos</option>
+        <option value="area">Área</option>
+      </select>
+    </div></div>
+
+    <div class="parametersContainer eight columns">
+      <label>Entre :</label>
+        <script>
+          $('.datepickerBegin').pickadate({
+          today: 'Hoy',
+          clear: 'Cancelar',
+          close: 'Cerrar',
+          monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+          weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
+          formatSubmit: 'yyyy/mm/dd',
+          format: 'dd mmmm yyyy'
+          });
+
+          $('.datepickerEnd').pickadate({
+          today: 'Hoy',
+          clear: 'Cancelar',
+          close: 'Cerrar',
+          monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+          weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
+          formatSubmit: 'yyyy/mm/dd',
+          format: 'dd mmmm yyyy'
+          });
+        </script>
+      <input class="datepickerBegin" ng-model="graficaDatos.beginDate" ng-change="guardar()">
+      <label> y </label>
+      <input class="datepickerEnd" ng-model="graficaDatos.endDate" ng-change="guardar()">
+    </div>
+
+    <div class="chartContainer sixteen columns">
+      <!--<div ng-if="graficaDatos.tipo == 'Autoridad'" data-ac-chart="chartType" data-ac-data="dataAutoridad" data-ac-config="configAutoridad" class="chart"></div>
+      -->
+      <div data-ac-chart="chartType" data-ac-data="data" data-ac-config="config" class="chart"></div>
+    </div>
+  </div>
+
+</div>

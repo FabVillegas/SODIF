@@ -29,9 +29,6 @@ config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRou
 				templateUrl: 'views/captura-view.html',
 				controller: 'capturaCtrl'
 			}
-		},
-		resolve:{
-			checkLogin: isLoggedIn // function that returns a promise
 		}
 	}).
 	state('oficios',{
@@ -45,9 +42,6 @@ config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRou
 				templateUrl: 'views/oficios-view.html',
 				controller: 'oficiosCtrl'
 			}
-		},
-		resolve:{
-			checkLogin: isLoggedIn // function that returns a promise
 		}
 	}).
 	state('grafica',{
@@ -58,12 +52,9 @@ config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRou
 				controller: 'menuCtrl'
 			},
 			body:{
-				templateUrl: 'views/grafica-view.html',
+				templateUrl: 'views/grafica2-view.html',
 				controller: 'graficaCtrl'
 			}
-		},
-		resolve:{
-			checkLogin: isLoggedIn // function that returns a promise
 		}
 	}).
 	state('oficio',{
@@ -78,12 +69,9 @@ config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRou
 				controller: 'oficioCtrl'
 			}
 		},
-		resolve:{
-			checkLogin: isLoggedIn // function that returns a promise
-		}
 	});
 }]);
-
+/*
 var isLoggedIn = function($firebaseSimpleLogin, $state, firebaseRefFactory){
 	var dataRef = new Firebase(firebaseRefFactory.getMainRef());
 	var loginObj = $firebaseSimpleLogin(dataRef);
@@ -99,3 +87,4 @@ var isLoggedIn = function($firebaseSimpleLogin, $state, firebaseRefFactory){
 		}
 	});
 };
+*/
