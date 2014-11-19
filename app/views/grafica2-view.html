@@ -55,6 +55,19 @@
       -->
       <div data-ac-chart="chartType" data-ac-data="data" data-ac-config="config" class="chart"></div>
     </div>
+
+    <div class="sixteen columns">
+      <table>
+        <tr>
+          <th>Titulo</th>
+          <th>Valor</th>
+        </tr>
+        <tr>
+          <td ng-repeat="check in checkList">{{check.$id}}</td>
+        </tr>
+      </table>
+    </div>
+
   </div>
 
 </div>

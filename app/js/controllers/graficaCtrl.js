@@ -56,30 +56,75 @@ function graficaCtrl($scope, $state, $firebase){
   */
 
   $scope.monthsArray = [];
+  $scope.checkList = [];
+  $scope.detallesArray = [];
+
+  $scope.variable = 'autoridad';
 
   $scope.test = function(){
-    console.log('Entra funcion');
-    $scope.prueb = $firebase(new Firebase('https://sistema-de-oficios.firebaseio.com/contadores/2014')).$asArray();
-/*
-    $scope.prueb.$loaded().then(function(){
-      console.log($scope.prueb[0]);
-    });*/
+    $scope.otraCosa = $firebase(new Firebase('https://sistema-de-oficios.firebaseio.com/contadores/2014')).$asArray(); // quien sabe que pedo
+    /*
+    $scope.otraCosa.$loaded().then(function(x) {
+      console.log(x);
+    });
+    */
+
+
 
     $scope.testRef = new Firebase('https://sistema-de-oficios.firebaseio.com/contadores/2014');
-
     $scope.testRef.orderByChild('val').on('child_added', function(snapshot){
-      //$scope.monthArray.push($snapshot);
-      //console.log(snapshot.key());
-      //console.log(snapshot.val());
-      //console.log('Mes de ' + snapshot.key() + " vale " + snapshot.val());
+
+      console.log('referencia de captura https://sistema-de-oficios.firebaseio.com/contadores/2014/' + snapshot.key() + '/' + $scope.variable);
+      /*
+      var temporaryObj = $firebase(
+        new Firebase('https://sistema-de-oficios.firebaseio.com/contadores/2014/' + snapshot.key() + '/' + $scope.variable + '/PGJE')
+      ).$asObject();
+      $scope.checkList.push(temporaryObj);
+      console.log($scope.checkList);
+*/
+
+      var firstRef = $firebase(new Firebase('https://sistema-de-oficios.firebaseio.com/contadores/2014/' + snapshot.key() + '/' + $scope.variable)).$asArray();
+      firstRef.$watch(function(event){
+        //console.log(event.key);
+        var secondRef = $firebase(new Firebase('https://sistema-de-oficios.firebaseio.com/contadores/2014/' + snapshot.key() + '/' + $scope.variable + '/' + event.key)).$asArray();
+        secondRef.$watch(function(snap){
+          console.log('secondREf');
+          var x = 'https://sistema-de-oficios.firebaseio.com/contadores/2014/' + snapshot.key() + '/' + $scope.variable + '/' + event.key + '/' + snap.key;
+          console.log(x.toString());
+
+          $scope.thirdRef = $firebase(new Firebase(x)).$asObject();
+          $scope.thirdRef.$loaded().then(function(child){
+            console.log(child.$id);
+            console.log(child.$value);
+          });
+
+          /*
+          $scope.thirdRef.$loaded().then(function(){
+            console.log('primer huijo');
+            console.log(thirdRef[0]);
+          });
+          */
+        });
+      });
+
+
+      /*
+      var temporaryOficioObj = $firebase(new Firebase(firebaseRefFactory.getTest(child_added.key))).$asObject();
+      $scope.oficios.push(temporaryOficioObj);
+      console.log($scope.oficios);
+      $scope.myData = $scope.oficios;
+      /*
+      $scope.checkList.push({
+        value: snapshot.val().autoridad//.PGJE[ 'AMP INV No 1 EJFDS GPE' ]
+      });
+      console.log('Este es el checklist');
+      console.log($scope.checkList);
+      */
       $scope.monthsArray.push({
         x: snapshot.key(),
-        y: [snapshot.val().val]
+        y: [snapshot.val().autoridad.PGJE.contAutoridad, snapshot.val().autoridad.PJE.contAutoridad, snapshot.val().autoridad.PJF.contAutoridad]
       });
-      console.log('MonthsArray');
-      console.log($scope.monthsArray);
     });
-
 
     $scope.config = {
       title: 'Autoridad',
@@ -92,11 +137,11 @@ function graficaCtrl($scope, $state, $firebase){
         display: true,
         position: 'right' //could be 'left, right'
       },
-      colors: ['#00C900', '#00A200', '#005C00', '#002D00', '#008000'],
+      colors: ['#00C900', '#030182', '#B60009'],
     };
 
     $scope.data = {
-      series: ['JP01', 'JP02', 'JP03', 'JP04', 'JP05'],
+      series: ['PGJE', 'PJE', 'PJF'],
       data: $scope.monthsArray
     };
 
@@ -172,12 +217,11 @@ function graficaCtrl($scope, $state, $firebase){
           return arr;
       };
 
-     // alert(diff('September 2014', 'November 2014'));
-
       var mesesEjeX = [];
-      mesesEjeX = diff('November 2014', 'November 2014');
 
+      mesesEjeX = diff('Noviembre 2014', 'Marzo 2015');
 
+    alert(mesesEjeX);
 
 
 
@@ -198,38 +242,6 @@ function graficaCtrl($scope, $state, $firebase){
 
 
       var contadoresParaCadaMes = [];
-
-$scope.arregloPrueba = [];
-
-
-var ref = new Firebase("https://sistema-de-oficios.firebaseio.com/contadores");
-
-/*$scope.contadoresRef = $firebase(new Firebase('https://sistema-de-oficios.firebaseio.com/contadores')).$asArray();
-
-$scope.contadoresRef.$loaded().then(function(){
-  console.log('Arreglo de contadores');
-  console.log($scope.contadoresRef[0].Noviembre.autoridad.PGJE.contAutoridad);
-});*/
-
-/*
-var ref = new Firebase("https://dinosaur-facts.firebaseio.com/");
-ref.orderByChild("height").on("child_added", function(snapshot) {
-  console.log(snapshot.key() + " was " + snapshot.val().height + " meters tall");
-});
-*/
-
-
-
-
-
-
-ref.orderByChild("val").on("child_added", function(childSnapshot) {
-  var pruebilla = [];
-  pruebilla = childSnapshot.val();
-  console.log(pruebilla);
-  console.log(pruebilla.Noviembre.autoridad.PGJE.contAutoridad);
-});
-
 
 
 

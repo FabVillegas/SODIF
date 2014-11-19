@@ -121,7 +121,7 @@ function oficiosCtrl($scope, $firebase, $state, $stateParams, firebaseRefFactory
       $scope.oficios.push(temporaryOficioObj);
       console.log($scope.oficios);
       $scope.myData = $scope.oficios;
-    });
+    }); 
   };
 
   // on loaded view methods
