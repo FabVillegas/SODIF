@@ -1,133 +1,294 @@
 angular.module('sodif').controller('graficaCtrl', graficaCtrl);
 
-graficaCtrl.$inject = ['$scope', '$state', '$firebase'];
+graficaCtrl.$inject = ['$scope', '$state', '$firebase', 'ngDialog', 'firebaseRefFactory', 'divideDateFactory', 'chartQueryFactory'];
 
-function graficaCtrl($scope, $state, $firebase){
-
-  /*
-  $scope.showDate = function(){
-    alert($scope.beginDate);
-  };
-
-  $scope.goCaptura = function(){
-    $state.go("captura")
-  };
-
-  $scope.goOficios = function(){
-    $state.go("oficios")
-  };
-
-  $scope.chartType = 'bar';
-  $scope.selectChartType = function(){
-    $scope.chartType = $scope.chart; // Valid values: 'pie', 'bar', 'line', 'point', 'area'
-  };
-
-  $scope.config = {
-    title: 'Autoridad',
-    tooltips: true,
-    labels: false,
-    mouseover: function() {},
-    mouseout: function() {},
-    click: function() {},
-    legend: {
-      display: true,
-      //could be 'left, right'
-      position: 'right'
-    },
-    colors: ['#00C900', '#00A200', '#005C00', '#002D00', '#008000'],
-  };
-
-  $scope.data = {
-    series: ['JP01', 'JP02', 'JP03', 'JP04', 'JP05'],
-    data: [{
-      x: "Enero",
-      y: [100, 500, 10, 154, 59]
-    }, {
-      x: "Febrero",
-      y: [300, 100, 100, 101, 13]
-    }, {
-      x: "Marzo",
-      y: [351, 8, 10, 154, 59]
-    }, {
-      x: "Abril",
-      y: [54, 0, 651, 10, 154]
-    }]
-  };
-  */
-
+function graficaCtrl($scope, $state, $firebase, ngDialog, firebaseRefFactory, divideDateFactory, chartQueryFactory){
+  // variables auxiliares
+  $scope.monthsRange = [];
+  $scope.query = '';
   $scope.monthsArray = [];
   $scope.checkList = [];
   $scope.detallesArray = [];
-
   $scope.variable = 'autoridad';
+  $scope.tempoArray = [];
+  $scope.callback = [];
 
-  $scope.test = function(){
-    $scope.otraCosa = $firebase(new Firebase('https://sistema-de-oficios.firebaseio.com/contadores/2014')).$asArray(); // quien sabe que pedo
-    /*
-    $scope.otraCosa.$loaded().then(function(x) {
-      console.log(x);
+  $scope.list = [];
+
+  $scope.isShown = true;
+  $scope.chartType = 'bar';
+
+
+  $scope.show = function(){
+    console.log(1); /* resuelve el bug, no modificar */
+  };
+
+  $scope.cleanArray =  function(array){
+    while(array.length){
+      array.pop();
+    }
+  };
+
+  $scope.fooArray = [];
+
+  $scope.bar = function(){
+    var ref = 'https://sistema-de-oficios.firebaseio.com/contadores/';
+    var ano = '2014'
+    var mes = 'Noviembre';
+    var query = 'autoridad';
+    console.log(ref + ano + '/' + mes + '/' + query + '/')
+    $scope.juzgadoFirstRef = new Firebase(ref + ano + '/' + mes + '/' + query + '/');
+    var sync = $firebase($scope.juzgadoFirstRef).$ref();
+    console.log(sync.path.n[2]);
+    $scope.juzgadoFirstRef.on('child_added', function(firstEvent){
+        //console.log(firstEvent.key());
+        $scope.juzgadoSecondRef = new Firebase(ref + ano + '/' + mes + '/' + query + '/' + firstEvent.key());
+        $scope.juzgadoSecondRef.once('child_added', function(secondEvent){
+          //console.log(secondEvent.key());
+          $scope.juzgadoThirdRef = $firebase(new Firebase(ref + ano + '/' + mes + '/' + query + '/' + firstEvent.key() + '/' + secondEvent.key())).$asObject();
+          $scope.juzgadoThirdRef.$loaded().then(function(child){
+            if(child.$id != 'contAutoridad'){
+              $scope.checkList.push({
+                name: child.$id,
+                value: child.$value
+              });
+            }
+          });
+        });
     });
+
+    $scope.fooArray.push({
+      monthName: sync.path.n[2],
+      info: $scope.checkList
+    });
+  };
+
+
+  $scope.foos = [];
+
+  $scope.tiposDeJuzgadoQuery = function(firebaseObj, index, ref){
+    $scope.fb = $firebase(firebaseObj).$asArray();
+    $scope.foos.push({
+      place: index,
+      month: $scope.fb.$inst()._ref.path.n[2],
+      values: []
+    });
+
+    console.log($scope.foos);
+    $scope.fb.$watch(function(child){
+      $scope.fb2 = $firebase(new Firebase(ref + '/' + child.key)).$asArray();
+      var syncRef2 = $scope.fb2.$inst()._ref.path.n[2];
+      console.log('syncRef2: ' + syncRef2);
+      $scope.fb2.$watch(function(secondChild){
+        if(secondChild.key != 'contAutoridad'){
+          $scope.fb3 = $firebase(new Firebase(ref + '/' + child.key + '/' + secondChild.key)).$asObject();
+          var syncRef3 = $scope.fb3.$inst()._ref.path.n[2];
+          console.log('syncRef3: ' + syncRef3);
+          $scope.fb3.$loaded().then(function(thirdChild){
+            var callbackRef = $firebase($scope.callback[index]).$ref().path.n[2];
+            $scope.list.push({
+              name: thirdChild.$id,
+              value: thirdChild.$value,
+              place: index
+            });
+
+            for($scope.w = 0; $scope.w < $scope.foos.length; $scope.w ++){
+              if($scope.foos[$scope.w].place == index){
+                console.log('goes in here ' + index);
+                console.log(thirdChild.$id);
+                var surrogate = [{
+                  name: thirdChild.$id,
+                  value: thirdChild.$value,
+                  place: index
+                }];
+                $scope.foos[index].values.push(surrogate);
+              }
+            }
+            /*
+            console.log('Arreglo');
+            console.log($scope.list);
+            console.log('Resultado de callbackRef');
+            console.log(callbackRef);
+            */
+
+
+
+            $scope.fb2.$destroy();
+            $scope.fb.$destroy();
+          });
+        }
+      });
+    });
+
+
+    /*
+    var sync = $firebase($scope.callback[index]);
+    console.log('before cleanup');
+    console.log($scope.checkList);
+    $scope.fooArray.push({
+      monthName: sync.$ref().path.n[2],
+      info: $scope.checkList
+    });
+    $scope.cleanArray($scope.checkList);
+    console.log('after cleanup');
+    console.log($scope.checkList);
     */
 
 
 
-    $scope.testRef = new Firebase('https://sistema-de-oficios.firebaseio.com/contadores/2014');
-    $scope.testRef.orderByChild('val').on('child_added', function(snapshot){
 
-      console.log('referencia de captura https://sistema-de-oficios.firebaseio.com/contadores/2014/' + snapshot.key() + '/' + $scope.variable);
+    /*
+    $scope.fb.$loaded().then(function(fbChild){
+
       /*
-      var temporaryObj = $firebase(
-        new Firebase('https://sistema-de-oficios.firebaseio.com/contadores/2014/' + snapshot.key() + '/' + $scope.variable + '/PGJE')
-      ).$asObject();
-      $scope.checkList.push(temporaryObj);
-      console.log($scope.checkList);
-*/
-
-      var firstRef = $firebase(new Firebase('https://sistema-de-oficios.firebaseio.com/contadores/2014/' + snapshot.key() + '/' + $scope.variable)).$asArray();
-      firstRef.$watch(function(event){
-        //console.log(event.key);
-        var secondRef = $firebase(new Firebase('https://sistema-de-oficios.firebaseio.com/contadores/2014/' + snapshot.key() + '/' + $scope.variable + '/' + event.key)).$asArray();
-        secondRef.$watch(function(snap){
-          console.log('secondREf');
-          var x = 'https://sistema-de-oficios.firebaseio.com/contadores/2014/' + snapshot.key() + '/' + $scope.variable + '/' + event.key + '/' + snap.key;
-          console.log(x.toString());
-
-          $scope.thirdRef = $firebase(new Firebase(x)).$asObject();
-          $scope.thirdRef.$loaded().then(function(child){
+      $scope.fb2 = $firebase(new Firebase(ref + '/' + lala.key)).$asArray();
+      $scope.fb2.$watch(function(lolo){
+        if(lolo.key != 'contAutoridad'){
+          console.log(lolo.key);
+          $scope.fb3 = $firebase(new Firebase(ref + '/' + lala.key + '/' + lolo.key)).$asObject();
+          $scope.fb3.$loaded().then(function(child){
             console.log(child.$id);
             console.log(child.$value);
+            $scope.checkList.push({
+              name: child.$id,
+              value: child.$value
+            });
           });
-
-          /*
-          $scope.thirdRef.$loaded().then(function(){
-            console.log('primer huijo');
-            console.log(thirdRef[0]);
-          });
-          */
-        });
+        }
       });
-
-
-      /*
-      var temporaryOficioObj = $firebase(new Firebase(firebaseRefFactory.getTest(child_added.key))).$asObject();
-      $scope.oficios.push(temporaryOficioObj);
-      console.log($scope.oficios);
-      $scope.myData = $scope.oficios;
-      /*
-      $scope.checkList.push({
-        value: snapshot.val().autoridad//.PGJE[ 'AMP INV No 1 EJFDS GPE' ]
-      });
-      console.log('Este es el checklist');
-      console.log($scope.checkList);
       */
-      $scope.monthsArray.push({
-        x: snapshot.key(),
-        y: [snapshot.val().autoridad.PGJE.contAutoridad, snapshot.val().autoridad.PJE.contAutoridad, snapshot.val().autoridad.PJF.contAutoridad]
+    //});
+
+
+    /*
+    $scope.fb.$watch(function(lala){
+      console.log('inside watch');
+      console.log(lala.key);
+      $scope.fb2 = $firebase(new Firebase(ref + '/' + lala.key)).$asArray();
+      $scope.fb2.$watch(function(lolo){
+        if(lolo.key != 'contAutoridad'){
+          console.log(lolo.key);
+          $scope.fb3 = $firebase(new Firebase(ref + '/' + lala.key + '/' + lolo.key)).$asObject();
+          $scope.fb3.$loaded().then(function(child){
+            console.log(child.$id);
+            console.log(child.$value);
+            $scope.checkList.push({
+              name: child.$id,
+              value: child.$value
+            });
+          });
+        }
+      });
+
+    });
+
+    $scope.fb.$loaded().then(function(child){
+      console.log('DESTROY!!!!');
+      $scope.fb.$destroy();
+    });
+
+  //  $scope.fb.$destroy();
+
+    /*
+    foo example
+    firebaseObj.once('value', function(datEvent){
+      var sync = $firebase($scope.callback[index]);
+      $scope.tempoArray.push({
+        x: sync.$ref().path.n[2],
+        y: [datEvent.val().PGJE.contAutoridad, datEvent.val().PJE.contAutoridad, datEvent.val().PJF.contAutoridad, ]
+      });
+    });
+    */
+    /*
+    console.log(firebaseObj);
+    firebaseObj.once('child_added', function(lala){
+      console.log(lala.key());
+      //$scope.fb = new Firebase(ref + '/' + 'autoridad');
+
+    });
+    */
+    /*
+    $scope.juzgadoFirstRef = firebaseObj;
+    var sync = $firebase($scope.juzgadoFirstRef).$ref();
+    $scope.testRef = $firebase(firebaseObj).$asArray();
+    $scope.testRef.$watch(function(event) {
+      $scope.anotherRef = $firebase(new Firebase(thatRef + '/' + event.key)).$asArray();
+      $scope.anotherRef.$watch(function(anotherEvent){
+        if(anotherEvent.key != 'contAutoridad'){
+            $scope.deepRef = $firebase(new Firebase(thatRef + '/' + event.key + '/' + anotherEvent.key)).$asObject();
+            $scope.deepRef.$loaded().then(function(child) {
+              $scope.checkList.push({
+                name: child.$id,
+                value: child.$value
+              });
+            });
+        }
       });
     });
 
+    /*
+    var sync = $firebase($scope.juzgadoFirstRef).$ref();
+    console.log(sync.path.n[2]);
+    $scope.testRef = $firebase(firebaseObj).$asArray();
+    $scope.testRef.$watch(function(event) {
+      console.log(event);
+    });
+    /*
+    $scope.anotherTest = new Firebase(thatRef);
+    $scope.anotherTest.on('child_added', function(snapshot){
+      console.log(snapshot.key());
+    });
+    */
+    /*
+    $scope.juzgadoFirstRef.on('child_added', function(firstEvent){
+      console.log(firstEvent.key());
+        //console.log(firstEvent.key());
+        $scope.juzgadoSecondRef = new Firebase(thatRef + '/' + firstEvent.key());
+        $scope.juzgadoSecondRef.once('child_added', function(secondEvent){
+          //console.log(secondEvent.key());
+          $scope.juzgadoThirdRef = $firebase(new Firebase(thatRef + '/' + firstEvent.key() + '/' + secondEvent.key())).$asObject();
+          $scope.juzgadoThirdRef.$loaded().then(function(child){
+            if(child.$id != 'contAutoridad'){
+              $scope.checkList.push({
+                name: child.$id,
+                value: child.$value
+              });
+            }
+          });
+        });
+
+    });
+
+    $scope.fooArray.push({
+      monthName: sync.path.n[2],
+      info: $scope.checkList
+    });
+    */
+  };
+
+  $scope.foo = function(firebaseObj, index){
+    firebaseObj.once('value', function(datEvent){
+      var sync = $firebase($scope.callback[index]);
+      $scope.tempoArray.push({
+        x: sync.$ref().path.n[2],
+        y: [datEvent.val().PGJE.contAutoridad, datEvent.val().PJE.contAutoridad, datEvent.val().PJF.contAutoridad, ]
+      });
+    });
+  };
+
+  $scope.autoridadQuery = function(arrayData){
+    $scope.query = 'autoridad';
+    for($scope.z = 0; $scope.z < arrayData.length; $scope.z++){
+      $scope.tempYear = divideDateFactory.getYear(arrayData[$scope.z]);
+      $scope.tempMonth = divideDateFactory.getMonthName(arrayData[$scope.z]);
+      $scope.tempRef = firebaseRefFactory.getContadoresRef() + $scope.tempYear + '/' + $scope.tempMonth + '/' + $scope.query;
+      $scope.callback[$scope.z] = new Firebase($scope.tempRef);
+      $scope.foo($scope.callback[$scope.z], $scope.z);
+
+      $scope.tiposDeJuzgadoQuery($scope.callback[$scope.z], $scope.z, $scope.tempRef);
+    }
     $scope.config = {
-      title: 'Autoridad',
+      title: $scope.chartQuery,
       tooltips: true,
       labels: false,
       mouseover: function() {},
@@ -139,234 +300,58 @@ function graficaCtrl($scope, $state, $firebase){
       },
       colors: ['#00C900', '#030182', '#B60009'],
     };
-
     $scope.data = {
       series: ['PGJE', 'PJE', 'PJF'],
-      data: $scope.monthsArray
+      data: $scope.tempoArray
     };
-
-
-
-
-
   };
 
-  $scope.test();
-
-
-  $scope.chartType = 'bar';
-  $scope.selectChartType = function(){
-    $scope.chartType = $scope.chart; // Valid values: 'pie', 'bar', 'line', 'point', 'area'
+  $scope.expectQuery = function(arrayData){
+    $scope.isShown = true;
+    $scope.data = { series: [], data: [] }; // no cambiar nada ya funciona
+    $scope.cleanArray($scope.tempoArray);
+    switch($scope.chartQuery){
+      case 'Autoridad':
+        $scope.autoridadQuery(arrayData);
+        break;
+      default:
+        ngDialog.open({ template: 'queryMessage' });
+        break;
+    }
   };
 
+  $scope.getMonthsRange = function(from, to){
+    var monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ];
+    var arr = [];
+    var datFrom = new Date();
+    datFrom.setDate(1);
+    datFrom.setMonth(parseInt(divideDateFactory.getNumericMonth(from)) - 1);
+    datFrom.setFullYear(parseInt(divideDateFactory.getNumericYear(from)));
+    var datTo = new Date();
+    datTo.setDate(1);
+    datTo.setMonth(parseInt(divideDateFactory.getNumericMonth(to) - 1));
+    datTo.setFullYear(parseInt(divideDateFactory.getNumericYear(to)));
 
+    var fromYear =  datFrom.getFullYear();
+    var toYear =  datTo.getFullYear();
+    var diffYear = (12 * (toYear - fromYear)) + datTo.getMonth();
 
-  // Instanciar objeto
-  $scope.graficaDatos = {
-    tipo : '',
-    beginDate : '',
-    endDate : ''
+    for (var i = datFrom.getMonth(); i <= diffYear; i++) {
+        arr.push(monthNames[i%12] + " " + Math.floor(fromYear+(i/12)));
+    }
+
+    return arr;
   };
-
 
   $scope.guardar = function(){
-    if($scope.graficaDatos.beginDate == ''){
-      ngDialog.open({
-        template: 'alertMessage'
-      });
+    if($scope.beginDate == '' || $scope.endDate == ''){
+      ngDialog.open({ template: 'alertMessage' });
     }
     else{
-      // Funciones auxiliares
-      var getMonth = function(fecha){
-        var x;
-        for(i = 3; i < fecha.length - 1; i++){
-          if(fecha.substring(i,i+1) == ' ')
-            x = i;
-        }
-        var y = fecha.substring(3,x);
-        return y;
-      };
-
-      var getYear = function(fecha){
-        var x = fecha.substring(fecha.length - 4, fecha.length);
-        return x;
-      };
-
-
-
-      var beginYear = getYear($scope.graficaDatos.beginDate);
-      var beginMonth = getMonth($scope.graficaDatos.beginDate);
-
-      var endYear = getYear($scope.graficaDatos.endDate);
-      var endMonth = getMonth($scope.graficaDatos.endDate);
-
-      var monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ];
-
-      function diff(from, to) {
-          var arr = [];
-          var datFrom = new Date('1 ' + from);
-          var datTo = new Date('1 ' + to);
-          var fromYear =  datFrom.getFullYear();
-          var toYear =  datTo.getFullYear();
-          var diffYear = (12 * (toYear - fromYear)) + datTo.getMonth();
-
-          for (var i = datFrom.getMonth(); i <= diffYear; i++) {
-              arr.push(monthNames[i%12] + " " + Math.floor(fromYear+(i/12)));
-          }
-
-          return arr;
-      };
-
-      var mesesEjeX = [];
-
-      mesesEjeX = diff('Noviembre 2014', 'Marzo 2015');
-
-    alert(mesesEjeX);
-
-
-
-
-
-
-  //    $scope.dataAutoridad = {
-  //      series: ['PGJE', 'PJF', 'PJE'],
-  //      data: [{x: beginMonth, y: [contPGJE, contPJF, contPJE]},
-  //      {
-  //        x: "Octubre",
-  //        y: [contPGJE, contPJF, contPJE]
-  //      }, {
-  //        x: endMonth,
-  //        y: [contPGJE, contPJF, contPJE]
-  //      }]
-  //    };
-
-
-      var contadoresParaCadaMes = [];
-
-
-
-
-
-
-//
-   //   //var contadores = [contPGJE, contPJF, contPJE];
-   //   //contadoresParaCadaMes.push(contadores);
-////
-   //   //alert("hi");
-//
-   // }
-    //alert("sali");
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-      $scope.configAutoridad = {
-        title: 'Autoridad',
-        tooltips: true,
-        labels: false,
-        mouseover: function() {},
-        mouseout: function() {},
-        click: function() {},
-        legend: {
-          display: true,
-          //could be 'left, right'
-          position: 'right'
-        },
-        colors: ['#00C900', '#00A200', '#005C00', '#002D00', '#008000'],
-      };
-
-      $scope.dataAutoridad = {
-        series: ['PGJE', 'PJF', 'PJE'],
-        data: [{x: beginMonth, y: [contPGJE, contPJF, contPJE]},
-        {
-          x: endMonth,
-          y: [contPGJE, contPJF, contPJE]
-        }]
-      };
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
+      $scope.monthsRange = [];
+      $scope.monthsRange = $scope.getMonthsRange($scope.beginDate, $scope.endDate);
+      $scope.expectQuery($scope.monthsRange);
     }
   };
-
-
-
-
-
-
-
-
-
-
-
-//  $scope.showDate = function(){
-//    alert($scope.beginDate);
-//  };
-//
-//  $scope.goCaptura = function(){
-//    $state.go("captura")
-//  };
-//
-//  $scope.goOficios = function(){
-//    $state.go("oficios")
-//  };
-
-/*
-  $scope.config = {
-    title: 'Autoridad',
-    tooltips: true,
-    labels: false,
-    mouseover: function() {},
-    mouseout: function() {},
-    click: function() {},
-    legend: {
-      display: true,
-      //could be 'left, right'
-      position: 'right'
-    },
-    colors: ['#00C900', '#00A200', '#005C00', '#002D00', '#008000'],
-  };
-
-  $scope.data = {
-    series: ['JP01', 'JP02', 'JP03', 'JP04', 'JP05'],
-    data: [{
-      x: "Enero",
-      y: [100, 500, 10, 154, 59,]
-    }, {
-      x: "Febrero",
-      y: [300, 100, 100, 101, 13]
-    }, {
-      x: "Marzo",
-      y: [351, 8, 10, 154, 59]
-    }, {
-      x: "Abril",
-      y: [54, 0, 651, 10, 154]
-    }]
-  };
-*/
-
 
 };

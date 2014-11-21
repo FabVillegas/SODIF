@@ -31,6 +31,10 @@ angular.module('sodif').factory('firebaseRefFactory', function(){
 		getTest: function(number){
 			var url = 'https://sistema-de-oficios.firebaseio.com/oficios/' + number + '/';
 			return url;
+		},
+		getContadoresRef: function(){
+			var url = 'https://sistema-de-oficios.firebaseio.com/contadores/';
+			return url;
 		}
 	};
 });
