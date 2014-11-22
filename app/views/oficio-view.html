@@ -1,8 +1,8 @@
 <div ng-controller="oficioCtrl">
 
   <div id="administrativo" class="container">
-    <div class="two columns offset-by-fourteen">
-      <a ng-click="enableEdit()" class="borrarCaptura" href="">Editar</a>
+    <div class="three columns offset-by-thirteen">
+      <button ng-click="enableEdit()" class="borrarCaptura" type="submit">Editar</button>
     </div>
     <div class="sixteen columns">
       <h2 class="titulo" >Administrativo : </h2>
@@ -10,13 +10,13 @@
     <!-- Administrativo derecha-->
     <div class="sixteen columns">
       <label class="capturaLabel">Fecha :</label>
-      <script>$('.datepicker').pickadate({today: 'Hoy',clear: 'Cancelar',close: 'Cerrar',monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],formatSubmit: 'yyyy/mm/dd',format: 'dd mmmm yyyy'});
+      <script>$('.datepicker').pickadate({selectYears: true ,selectMonths: true ,today: 'Hoy',clear: 'Cancelar',close: 'Cerrar',monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],formatSubmit: 'yyyy/mm/dd',format: 'dd mmmm yyyy'});
       </script>
-      <input ng-model="oficio.fecha" ng-change="fillList()" ng-disabled="isDisabled" class="capturaDate datepicker">
+      <input ng-model="oficio.fecha" ng-disabled="isDisabled" class="capturaDate datepicker">
     </div>
     <div class="eight columns">
-      <input ng-model="oficio.numero" ng-change="isOficio()" ng-disabled="isDisabled" class="capturaInput" type="text" placeholder="Folio de oficio">
-      <label ng-show="itExists != -1" class="warning">Oficio ya existe.</label>
+      <label class="warning">Número de oficio: </label>
+      <input ng-model="oficio.numero" ng-disabled="true" class="capturaInput" type="text" placeholder="Folio de oficio">
       <select ng-model="oficio.autoridad" ng-disabled="isDisabled" class="capturaDropdown">
         <option value="" disabled>Autoridad correspondiente</option>
         <option>PGJE</option>
@@ -25,26 +25,26 @@
       </select>
       <select ng-model="$parent.oficio.tipoJuzgado" ng-disabled="isDisabled" ng-if="oficio.autoridad == 'PGJE'" class="animate-if capturaDropdown">
         <option value="" disabled>Tipo de Juzgado</option>
-        <option>A.M.P JF  No. 1 GPE</option>
-        <option>A.M.P. INV. No. 1 EJFDS GPE</option>
-        <option>A.M.P. INV. No. 2 EJFDS GPE</option>
-        <option>A.M.P. INV. No. 3 EJFDS GPE</option>
-        <option>A.M.P. INV. No. 4 EJFDS GPE</option>
-        <option>A.M.P. INV. UI No. 1  HOMICIDIO Y LESIONES DOLOSAS GPE</option>
-        <option>A.M.P. INV. UI No. 2  HOMICIDIO Y LESIONES DOLOSAS GPE</option>
-        <option>A.M.P. INV.  No. 6  ROBOS GPE</option>
-        <option>A.M.P. INV. No. 1 EJFDS STA CATARINA</option>
-        <option>A.M.P. INV. No. 2 EJFDS STA CATARINA</option>
-        <option>A.M.P. INV. No. 3 EJFDS STA CATARINA</option>
-        <option>A.M.P. UNIDAD 1 APODACA</option>
-        <option>A.M.P. UNIDAD 2 APODACA</option>
-        <option>A.M.P. No. 1 ESPECIAL JUSTICIA PARA ADOLESCENTES</option>
-        <option>A.M.P. No. 2 ESPECIAL JUSTICIA PARA ADOLESCENTES</option>
-        <option>A.M.P. No. 3 ESPECIAL JUSTICIA PARA ADOLESCENTES</option>
-        <option>A.M.P. UI JF MONTERREY</option>
-        <option>A.M.P. JF No. 6</option>
-        <option>A.M.P. JF No. 3 ESCOBEDO</option>
-        <option>A.M.P. ESPECIALIZADA JUICIO ORAL</option>
+        <option>AMP JF  No 1 GPE</option>
+        <option>AMP INV No 1 EJFDS GPE</option>
+        <option>AMP INV No 2 EJFDS GPE</option>
+        <option>AMP INV No 3 EJFDS GPE</option>
+        <option>AMP INV No 4 EJFDS GPE</option>
+        <option>AMP INV UI No 1  HOMICIDIO Y LESIONES DOLOSAS GPE</option>
+        <option>AMP INV UI No 2  HOMICIDIO Y LESIONES DOLOSAS GPE</option>
+        <option>AMP INV  No 6  ROBOS GPE</option>
+        <option>AMP INV No 1 EJFDS STA CATARINA</option>
+        <option>AMP INV No 2 EJFDS STA CATARINA</option>
+        <option>AMP INV No 3 EJFDS STA CATARINA</option>
+        <option>AMP UNIDAD 1 APODACA</option>
+        <option>AMP UNIDAD 2 APODACA</option>
+        <option>AMP No 1 ESPECIAL JUSTICIA PARA ADOLESCENTES</option>
+        <option>AMP No 2 ESPECIAL JUSTICIA PARA ADOLESCENTES</option>
+        <option>AMP No 3 ESPECIAL JUSTICIA PARA ADOLESCENTES</option>
+        <option>AMP UI JF MONTERREY</option>
+        <option>AMP JF No 6</option>
+        <option>AMP JF No 3 ESCOBEDO</option>
+        <option>AMP ESPECIALIZADA JUICIO ORAL</option>
       </select>
       <select ng-model="$parent.oficio.tipoJuzgado" ng-disabled="isDisabled" ng-if="oficio.autoridad == 'PJF'" class="animate-if capturaDropdown">
         <option value="" disabled>Tipo de Juzgado</option>
@@ -247,7 +247,7 @@
           <option>Error en los nombres que se contienen, se solicitó aclaración previa.</option>
         </select>
         <div class="eliminateMenorContainer">
-          <button ng-click="cancelMenor()" ng-disabled="isDisabled" class="eraseMenor" type="submit">Borrar Menor</button>
+          <button ng-click="cancelMenor()" ng-disabled="isDisabled" ng-style="eraseMenorDisabled" class="eraseMenor" type="submit">Borrar Menor</button>
         </div>
         <button ng-click="addMenorToMenores($index)" ng-disabled="isDisabled" ng-style="disableStyle" class="saveMenor" type="submit">Guardar Menor</button>
       </div>
@@ -262,10 +262,10 @@
       <textarea ng-model="oficio.descripcion" ng-disabled="isDisabled" class="descripcion" rows="5" placeholder="Descripción del oficio"></textarea>
     </div>
     <div class="four columns">
-      <button ng-click="saveOficio()" ng-enter="closeDialog()" ng-disabled="isDisabled" ng-style="disableStyle" class="guardarCaptura" type="submit">Guardar oficio</button>
+      <button ng-click="editOficio()" ng-enter="closeDialog()" ng-disabled="itExists != -1" class="guardarCaptura" ng-style="disableStyle" type="submit">Guardar oficio</button>
     </div>
-    <div class="two columns offset-by-ten">
-      <a ng-click="enableEdit()" class="borrarCaptura" href="">Editar</a>
+    <div class="three columns offset-by-nine">
+      <button ng-click="enableEdit()" class="borrarCaptura" type="submit">Editar</button>
     </div>
   </div>
 

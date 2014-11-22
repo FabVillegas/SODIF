@@ -237,26 +237,6 @@ ______________________________________________ */
     display: inline-block;
   }
 
-  .eliminateMenor:link, .eliminateMenor:visited {
-    width: auto;
-    margin: 0 0 0 0;
-    padding: 0;
-    color: #70B44A;
-    font-family: 'Arial';
-    font-weight: bold;
-    font-size: 1em;
-    text-decoration: none;
-    text-align: right;
-  }
-
-  .eliminateMenor:link:active, .eliminateMenor:visited:active {
-    color: #70B44A;
-  }
-
-  .eliminateMenor:hover{
-    color: #002D00;
-  }
-
   .guardarCaptura{
     width: 100%;
     padding: 10px 0 10px 0;
@@ -285,6 +265,8 @@ ______________________________________________ */
     font-weight: bold;
     font-size: 1em;
     text-decoration: none;
+    text-align: right;
+    cursor: pointer;
   }
 
   .borrarCaptura:hover{

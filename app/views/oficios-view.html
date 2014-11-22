@@ -1,7 +1,5 @@
 <div ng-controller="oficiosCtrl">
-
   <div id="tablaOficios" class="container">
-
     <div class="sixteen columns">
       <select ng-model="selectedYear" ng-change="getMonths()">
         <option value="" disabled>Años</option>
@@ -12,11 +10,8 @@
         <option ng-repeat="month in months">{{month.key}}</option>
       </select>
     </div>
-
     <div class="sixteen columns">
       <div class="gridStyle" ng-grid="gridOptions"> </div>
     </div>
-
   </div>
-
 </div>

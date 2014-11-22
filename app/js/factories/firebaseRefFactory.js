@@ -35,38 +35,22 @@ angular.module('sodif').factory('firebaseRefFactory', function(){
 		getContadorMunicipiosRef: function(year, month, municipio){
 			var url = this.getMainRef() + 'contadores/' + year + '/' + month + '/municipio/' + municipio;
 			return url;
-		},/* de aqui para abajo ya no sirven */
-		getOficiosRef: function(year, month){
-			var url = 'https://sistema-de-oficios.firebaseio.com/oficios/' + year + '/' + month + '/';
+		},
+		goToRef: function(path){
+			var url = this.getMainRef() + path + '/';
 			return url;
 		},
-		getRefToSave: function(year,month){
-			var url = 'https://sistema-de-oficios.firebaseio.com/capturas/' + year + '/' + month + '/';
+		getCapturasMonthsRef: function(year){
+			var url = this.goToRef('capturas') + year + '/';
 			return url;
 		},
-		getYearsRef: function(){
-			var url = 'https://sistema-de-oficios.firebaseio.com/oficios';
+		getOficio: function(number){
+			var url = this.getRefToSaveOficio() + number + '/';
 			return url;
 		},
-		getMonthsRef: function(year){
-			var url = 'https://sistema-de-oficios.firebaseio.com/capturas/' + year + '/';
-			return url;
-		},
-		getOficioRef: function(year, month, number){
-			var url = 'https://sistema-de-oficios.firebaseio.com/oficios/' + year + '/' + month + '/' + number;
-			return url;
-		},
-		getCapturasYearsRef: function(){
-			var url = 'https://sistema-de-oficios.firebaseio.com/capturas/';
-			return url;
-		},
-		getTest: function(number){
-			var url = 'https://sistema-de-oficios.firebaseio.com/oficios/' + number + '/';
-			return url;
-		},
-		getContadoresRef: function(){
-			var url = 'https://sistema-de-oficios.firebaseio.com/contadores/';
-			return url;
+		getCaptura: function(year, month, number){
+			var url = this.getRefToSaveCaptura(year,month) + number;
+			return url; 
 		}
 	};
 });

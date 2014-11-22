@@ -1,20 +1,21 @@
 angular.module('sodif').controller('oficiosCtrl', oficiosCtrl);
 
-oficiosCtrl.$inject = ['$scope', '$firebase', '$state', '$stateParams', 'firebaseRefFactory', '$location', 'divideDateFactory'];
+oficiosCtrl.$inject = ['$scope', '$firebase', '$state', '$stateParams', '$location', 'firebaseRefFactory', 'dateFactory'];
 
-function oficiosCtrl($scope, $firebase, $state, $stateParams, firebaseRefFactory, $location, divideDateFactory){
+function oficiosCtrl($scope, $firebase, $state, $stateParams, $location, firebaseRefFactory, dateFactory){
 
   /* variables necesarias */
   $scope.myData = [];
   $scope.years = [];
   $scope.months = [];
-
+  $scope.oficiosArray = [];
   $scope.yearsRef = '';
   $scope.monthsRef = '';
-
+  $scope.oficios = [];
+  $scope.mySelections = [];
   /* metodos ng-change*/
   $scope.getYears = function(){ /* Traer los años que tienen capturas para delimitar que oficios traer y aligerar carga */
-    $scope.yearsRef = $firebase(new Firebase(firebaseRefFactory.getCapturasYearsRef())).$asArray();
+    $scope.yearsRef = $firebase(new Firebase(firebaseRefFactory.goToRef('capturas'))).$asArray();
     $scope.yearsRef.$watch(function(child_added){
       $scope.years.push({
         key: child_added.key
@@ -24,7 +25,7 @@ function oficiosCtrl($scope, $firebase, $state, $stateParams, firebaseRefFactory
 
   $scope.getMonths = function(){ /* tras seleccionar año, se traen los meses que contengan capturas */
     $scope.months = []; /* 'limpiar' arreglo para que los elementos no se repitan en caso de cambiar año */
-    $scope.monthsRef = $firebase(new Firebase(firebaseRefFactory.getMonthsRef($scope.selectedYear))).$asArray();
+    $scope.monthsRef = $firebase(new Firebase(firebaseRefFactory.getCapturasMonthsRef($scope.selectedYear))).$asArray();
     $scope.monthsRef.$watch(function(child_added){
       $scope.months.push({
         key: child_added.key
@@ -35,11 +36,12 @@ function oficiosCtrl($scope, $firebase, $state, $stateParams, firebaseRefFactory
   /* metodos ng-click */
   $scope.goDetalle = function(fecha, numero){
     if (numero != undefined){
-      var year = divideDateFactory.getYear(fecha);
-      var month = divideDateFactory.getMonth(fecha);
+      var year = dateFactory.getYear(fecha);
+      var month = dateFactory.getMonth(fecha);
       /* Destruir arreglos y objetos antes de dejar esta view */
       $scope.yearsRef.$destroy();
       $scope.monthsRef.$destroy();
+      $scope.oficiosArray.$destroy();
       $location.path('/oficios/' + year + '/' + month + '/' + numero);
     }
     else{
@@ -105,23 +107,22 @@ function oficiosCtrl($scope, $firebase, $state, $stateParams, firebaseRefFactory
     }
   };
 
-
-  $scope.oficios = [];
-  $scope.mySelections = [];
-  $scope.selectedIDs = [];
-  $scope.elementos = [];
-
   // ng-change
   $scope.getOficios = function(){ /* Traer los oficios desde Firebase */
     $scope.oficios = [];
-    var oficiosRef = $firebase(new Firebase(firebaseRefFactory.getRefToSave($scope.selectedYear, $scope.selectedMonth))).$asArray();
-    oficiosRef.$watch(function(child_added){
-      console.log('referencia de captura ' + firebaseRefFactory.getTest(child_added.key));
-      var temporaryOficioObj = $firebase(new Firebase(firebaseRefFactory.getTest(child_added.key))).$asObject();
-      $scope.oficios.push(temporaryOficioObj);
-      console.log($scope.oficios);
-      $scope.myData = $scope.oficios;
-    }); 
+    $scope.oficiosArray = $firebase(new Firebase(firebaseRefFactory.getRefToSaveCaptura($scope.selectedYear, $scope.selectedMonth))).$asArray();
+    $scope.oficiosArray.$watch(function(child_added){
+      var temporaryCapturaObj = $firebase(new Firebase(firebaseRefFactory.getCaptura($scope.selectedYear, $scope.selectedMonth, child_added.key))).$asObject();
+      temporaryCapturaObj.$loaded().then(function(child){
+        console.log(child.$value);
+        if(child.$value){
+          var temporaryOficioObj = $firebase(new Firebase(firebaseRefFactory.getOficio(child_added.key))).$asObject();
+          $scope.oficios.push(temporaryOficioObj);
+          $scope.myData = $scope.oficios;
+        }
+      });
+
+    });
   };
 
   // on loaded view methods

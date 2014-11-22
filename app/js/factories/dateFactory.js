@@ -1,8 +1,5 @@
 angular.module('sodif').factory('dateFactory', ['ngDialog', function(ngDialog){
   return{
-    test: function(firebaseObj, index, firebaseArray){
-      console.log(1);
-    },
     getMonth: function(date){
       var x;
       for(var i = 3; i < date.length - 1; i++){
@@ -18,7 +15,7 @@ angular.module('sodif').factory('dateFactory', ['ngDialog', function(ngDialog){
     },
     getNumericMonth: function(date){
       var x;
-      for(j = 3; j < date.length - 1; j++){
+      for(var j = 3; j < date.length - 1; j++){
         if(date.substring(j,j+1) == '/')
           x = j;
       }

@@ -12,16 +12,16 @@
     </div>
 
     <div class="eight columns">
-      <input ng-model="oficio.numero" ng-change="isOficio()" class="capturaInput" type="text" placeholder="Folio de oficio">
+      <input ng-model="oficio.numero" class="capturaInput" type="text" placeholder="Folio de oficio">
       <label ng-show="itExists != -1" class="warning">Oficio ya existe.</label>
       <select ng-model="oficio.autoridad" class="capturaDropdown">
-        <option value="" disabled>Autoridad correspondiente</option>
+        <option disabled>Autoridad correspondiente</option>
         <option>PGJE</option>
         <option>PJF</option>
         <option>PJE</option>
       </select>
       <select ng-model="$parent.oficio.tipoJuzgado" ng-if="oficio.autoridad == 'PGJE'" class="animate-if capturaDropdown">
-        <option value="" disabled>Tipo de Juzgado</option>
+        <option disabled>Tipo de Juzgado</option>
         <option>AMP JF  No 1 GPE</option>
         <option>AMP INV No 1 EJFDS GPE</option>
         <option>AMP INV No 2 EJFDS GPE</option>
@@ -44,7 +44,7 @@
         <option>AMP ESPECIALIZADA JUICIO ORAL</option>
       </select>
       <select ng-model="$parent.oficio.tipoJuzgado" ng-if="oficio.autoridad == 'PJF'" class="animate-if capturaDropdown">
-        <option value="" disabled>Tipo de Juzgado</option>
+        <option disabled>Tipo de Juzgado</option>
         <option>JUZ 1 DTO EN MATERIA CIVIL Y DEL TRABAJO</option>
         <option>JUZ 2 DTO EN MATERIA CIVIL Y DEL TRABAJO</option>
         <option>JUZ 3 DTO EN MATERIA CIVIL Y DEL TRABAJO</option>
@@ -64,7 +64,7 @@
     <!-- Administrativo izquierda -->
     <div class="eight columns">
       <select ng-model="oficio.tipoDeJuicio" class="capturaDropdown">
-        <option value="" disabled>Tipo de Juicio</option>
+        <option disabled>Tipo de Juicio</option>
         <option>CAUSA PENAL</option>
         <option>AVERIGUACION PEVIA</option>
         <option>CARPETA DE INVESTIGACION</option>
@@ -96,7 +96,7 @@
         <option>EXHORTO DE JUICIO DE CONTROVERSIA DE ORDEN FAMILIAR</option>
       </select>
       <select ng-model="oficio.municipio" class="capturaDropdown">
-        <option value="" disabled>Municipio</option>
+        <option disabled>Municipio</option>
         <option>Abasolo</option>
         <option>Agualeguas</option>
         <option>Allende</option>
@@ -150,18 +150,18 @@
         <option>Villaldama</option>
       </select>
       <select ng-model="oficio.servicio" class="capturaDropdown">
-        <option value="" disabled>Servicio</option>
+        <option disabled>Servicio</option>
         <option>Evaluación</option>
         <option>Asistencia</option>
       </select>
       <select ng-model="oficio.areaDeServicio" class="capturaDropdown">
-        <option value="" disabled>Area de Servicio</option>
+        <option disabled>Area de Servicio</option>
         <option>Psicología</option>
         <option>Trabajo Social</option>
         <option>Legal</option>
       </select>
       <select ng-model="$parent.oficio.tipoDeServicio" ng-if="oficio.servicio == 'Evaluación' && oficio.areaDeServicio == 'Psicología'" class="animate-if capturaDropdown">
-        <option value="" disabled>Tipo de Servicio</option>
+        <option disabled>Tipo de Servicio</option>
         <option>Evaluación de posible afectación emocional o daño psicológico</option>
         <option>Evaluación del estado emocional  actual o psíquico</option>
         <option>Evaluación e Intervención ecosistémica</option>
@@ -173,7 +173,7 @@
         <option>Seguimiento</option>
       </select>
       <select ng-model="$parent.oficio.tipoDeServicio" ng-if="oficio.servicio == 'Evaluación' && oficio.areaDeServicio == 'Trabajo Social'" class="animate-if capturaDropdown">
-        <option value="" disabled>Tipo de Servicio</option>
+        <option disabled>Tipo de Servicio</option>
         <option>Dependencia económica</option>
         <option>Estudio Socioeconómico</option>
         <option>Evaluación Social</option>
@@ -183,7 +183,7 @@
         <option>Seguimiento</option>
       </select>
       <select ng-model="$parent.oficio.tipoDeServicio" ng-if="oficio.servicio == 'Asistencia' && oficio.areaDeServicio == 'Psicología'" class="animate-if capturaDropdown">
-        <option value="" disabled>Tipo de Servicio</option>
+        <option disabled>Tipo de Servicio</option>
         <option>Coadyuvar al escuchar el parecer de menor y/o acompañamiento</option>
         <option>Coadyuvar en diligencia de restitución del menor de edad a uno de sus padres</option>
         <option>Realizar y emitir prueba de madurez a menores de edad</option>
@@ -194,7 +194,7 @@
         <option>Dictaminar en diligencia si el menor de edad e víctima o no de maltrato</option>
       </select>
       <select ng-model="$parent.oficio.tipoDeServicio"  ng-if="oficio.servicio == 'Asistencia' && oficio.areaDeServicio == 'Trabajo Social'" class="animate-if capturaDropdown">
-        <option value="" disabled>Tipo de Servicio</option>
+        <option disabled>Tipo de Servicio</option>
         <option>Apoyo en sustraer menor y traslado de menor a Centro Estatal de Convivencias</option>
         <option>Asistencia a menores de edad en diligencia de Arresto</option>
         <option>Coadyuvar al escuchar el parecer de menor y/o acompañamiento</option>
@@ -202,7 +202,7 @@
         <option>Asistencia social en acto judicial de convivencia</option>
       </select>
       <select ng-model="$parent.oficio.tipoDeServicio" ng-if="oficio.servicio == 'Asistencia' && oficio.areaDeServicio == 'Legal'" class="animate-if capturaDropdown">
-        <option value="" disabled>Tipo de Servicio</option>
+        <option disabled>Tipo de Servicio</option>
         <option>Acompañamiento a menor de edad durante desahogo de diligencia</option>
       </select>
     </div>
@@ -213,29 +213,29 @@
       <h2 class="titulo" >Menores : </h2>
     </div>
     <div class="four columns">
-      <button ng-click="addMenorToList()" class="addMenor">Agregar menor</button>
+      <button ng-click="addMenorToList()" ng-disabled="isDisabled" ng-style="disableStyle" class="addMenor menorDropdown">Agregar menor</button>
     </div>
     <div ng-repeat="menor in listaMenores track by $index" class="animate-if">
       <div class="menorContainer sixteen columns">
-        <input ng-model="menor.edad" class="menorDropdown" type="text" placeholder="Edad">
-        <select ng-model="menor.sexo" class="menorDropdown">
-          <option value="" disabled> Sexo </option>
+        <input ng-model="menor.edad" ng-disabled="isDisabled" class="menorDropdown" type="text" placeholder="Edad">
+        <select ng-model="menor.sexo" ng-disabled="isDisabled" class="menorDropdown">
+          <option value="" disabled>Sexo</option>
           <option>Femenino</option>
           <option>Masculino</option>
         </select>
       </div>
       <div class="eight columns">
-        <input ng-model="menor.nombre" class="menorInput" type="text" placeholder="Nombre(s)">
-        <input ng-model="menor.apellidoPaterno" class="menorInput" type="text" placeholder="Apellido paterno">
-        <input ng-model="menor.apellidoMaterno" class="menorInput" type="text" placeholder="Apellido materno">
+        <input ng-model="menor.nombre" ng-disabled="isDisabled" class="menorInput" type="text" placeholder="Nombre(s)">
+        <input ng-model="menor.apellidoPaterno" ng-disabled="isDisabled" class="menorInput" type="text" placeholder="Apellido paterno">
+        <input ng-model="menor.apellidoMaterno" ng-disabled="isDisabled" class="menorInput" type="text" placeholder="Apellido materno">
       </div>
       <div class="eight columns">
-        <select ng-model="menor.respuesta" class="capturaDropdown">
-          <option selected disabled>Respuesta brindada a petición</option>
+        <select ng-model="menor.respuesta" ng-disabled="isDisabled" class="capturaDropdown">
+          <option value="" disabled>Respuesta brindada a petición</option>
           <option>Si</option>
           <option>No</option>
         </select>
-        <select ng-model="menor.motivo" class="capturaDropdown animate-if" ng-if="menor.respuesta == 'No'">
+        <select ng-model="menor.motivo" ng-disabled="isDisabled" class="capturaDropdown animate-if" ng-if="menor.respuesta == 'No'">
           <option value="" disabled>Motivos de la negativa</option>
           <option>No hay personal disponible.</option>
           <option>La petición llegó a destiempo.</option>
@@ -244,9 +244,9 @@
           <option>Error en los nombres que se contienen, se solicitó aclaración previa.</option>
         </select>
         <div class="eliminateMenorContainer">
-          <a class="eliminateMenor" href="" ng-click="cancelMenor($index)">Borrar menor</a>
+          <button ng-click="cancelMenor()" ng-disabled="isDisabled" class="eraseMenor" type="submit">Borrar Menor</button>
         </div>
-        <button ng-click="addMenorToMenores($index)" type="submit" class="saveMenor">Guardar Menor</button>
+        <button ng-click="addMenorToMenores($index)" ng-disabled="isDisabled" ng-style="disableStyle" class="saveMenor" type="submit">Guardar Menor</button>
       </div>
     </div>
   </div>

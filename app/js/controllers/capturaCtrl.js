@@ -1,12 +1,13 @@
 angular.module('sodif').controller('capturaCtrl', capturaCtrl);
 
-capturaCtrl.$inject = ['$scope', '$firebase', '$state', 'firebaseRefFactory', 'dateFactory', 'divideDateFactory', 'ngDialog'];
+capturaCtrl.$inject = ['$scope', '$firebase', '$state', 'firebaseRefFactory', 'dateFactory', 'ngDialog'];
 
-function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, dateFactory, divideDateFactory, ngDialog){
+function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, dateFactory, ngDialog){
 
   // Variables auxiliares
   $scope.itExists = -1;
-  $scope.oficiosList = [];
+  $scope.toCheckList = [];
+
 
   $scope.erase = function(){
     $scope.oficio.tipoJuzgado = '';
@@ -47,6 +48,21 @@ function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, dateFactory,
 
   $scope.cancelMenor = function(index){
     $scope.listaMenores.splice(index, 1);
+  };
+
+  $scope.cleanInputs = function(){
+    $scope.oficio = {
+      autoridad: 'Autoridad correspondiente',
+      tipoJuzgado : 'Tipo de Juzgado',
+      tipoDeJuicio : 'Tipo de Juicio',
+      municipio : 'Municipio',
+      servicio : 'Servicio',
+      areaDeServicio : 'Area de Servicio',
+      tipoDeServicio : 'Tipo de Servicio',
+      menores: []
+    };
+
+    $scope.listaMenores = [];
   };
 
   $scope.save = function(){
@@ -124,37 +140,19 @@ function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, dateFactory,
     });
   };
 
-  $scope.cleanInputs = function(){
-    $scope.oficio = {
-      autoridad : 'Autoridad correspondiente',
-      tipoJuzgado : 'Tipo de Juzgado',
-      tipoDeJuicio : 'Tipo de Juicio',
-      municipio : 'Municipio',
-      servicio : 'Servicio',
-      areaDeServicio : 'Area de Servicio',
-      tipoDeServicio : 'Tipo de Servicio',
-      menores: []
-    };
-
-    $scope.listaMenores = [];
-  };
-
   $scope.fillList = function(){
-    var toCheckList = $firebase(new Firebase('https://sistema-de-oficios.firebaseio.com/oficios')).$asArray();
-    toCheckList.$loaded().then(function(){
-      $scope.oficiosList = toCheckList;
+    $scope.toCheckList = $firebase(new Firebase('https://sistema-de-oficios.firebaseio.com/oficios')).$asArray();
+    $scope.toCheckList.$watch(function(child_added){
+      if($scope.oficio.numero != undefined){
+        $scope.itExists = $scope.toCheckList.$indexFor($scope.oficio.numero);
+        if($scope.itExists != -1)
+          $scope.disableStyle = {'background-color':'grey', 'border-color':'black'};
+        else
+          $scope.disableStyle = {};
+      }
     });
   };
 
-  // ng-change methods
-  $scope.isOficio = function(){
-    $scope.itExists = $scope.oficiosList.$indexFor($scope.oficio.numero);
-    if($scope.itExists != -1)
-      $scope.disableStyle = {'background-color':'grey', 'border-color':'black'};
-    else
-      $scope.disableStyle = {};
-  };
-
   $scope.fillList();
-
+  $scope.cleanInputs();
 };
