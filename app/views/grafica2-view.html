@@ -34,6 +34,18 @@
     <div class="chartContainer sixteen columns">
       <div ng-click="show()" ng-show="isShown" data-ac-chart="chartType" data-ac-data="data" data-ac-config="config" class="chart"></div>
     </div>
+    <div class="sixteen columns" ng-repeat="serie in series">
+      <table class="eight columns offset-by-four">
+        <tr>
+          <th>{{serie.month}}</th>
+        </tr>
+        <tr ng-repeat="label in serie.labels">
+          <td class="juzgadosValues">
+            {{label.placeInChart}} {{label.name}}
+          </td>
+        </tr>
+      </table>
+    </div>
     <h3 ng-show="isJuzgadosQuery">Tipos de Juzgados</h3>
     <div ng-show="isJuzgadosQuery" class="sixteen columns" ng-repeat="foo in foos">
       <table class="eight columns offset-by-four">

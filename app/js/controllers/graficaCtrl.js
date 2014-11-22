@@ -135,49 +135,37 @@ function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, date
     */
   };
 
+
+
   $scope.juicioQuery = function(firebaseRef, index){
     $scope.callbacks[index] = $firebase(new Firebase(firebaseRef)).$asArray();
+    var sync = $scope.callbacks[index].$inst()._ref.path.n[2];
+    $scope.series.push({
+      spot: index,
+      month: sync,
+      labels: []
+    });
     $scope.callbacks[index].$loaded().then(function(child){
       var aux = [];
       for(var i = 0; i < child.length; i++){
         if(child[i].$id != 'Tipo de Juicio'){
           aux.push(child[i].$value);
-          $scope.series.push(child[i].$id);
+          for(var j = 0; j < $scope.series.length; j ++){
+            if($scope.series[j].spot == index){
+              $scope.series[index].labels.push({
+                placeInChart: i+1,
+                name: child[i].$id
+              });
+              console.log($scope.series);
+            }
+          }
         }
       }
       $scope.dataArray.push({
-        x: 'Noviembre', //sync.$ref().path.n[2]
+        x: sync, //sync.$ref().path.n[2]
         y: aux,
       });
     });
-    /*
-    $scope.tempFirebaseObj = $firebase(new Firebase(firebaseRef)).$asArray();
-    $scope.tempFirebaseObj.$loaded().then(function(child){
-      //var sync = $scope.tempFirebaseObj.$inst();
-      var aux = [];
-      for(var i = 0; i < child.length; i++){
-        if(child[i].$id != 'Tipo de Juicio'){
-          aux.push(child[i].$value);
-          $scope.series.push(child[i].$id);
-        }
-      }
-      $scope.dataArray.push({
-        x: 'Noviembre', //sync.$ref().path.n[2]
-        y: aux,
-      });
-      /*
-      $scope.autoridadArray.push({
-        x: sync.$ref().path.n[2],
-        y: [datEvent.val().PGJE.contAutoridad, datEvent.val().PJE.contAutoridad, datEvent.val().PJF.contAutoridad]
-      });
-
-      console.log('dataArray');
-      console.log($scope.dataArray);
-      console.log('series');
-      console.log($scope.series)
-
-    });
-    */
   };
 
 
@@ -235,7 +223,7 @@ function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, date
           },
         };
         $scope.data = { // config chart data
-          series: $scope.series,
+          series: [],
           data: $scope.dataArray,
         };
         break;
