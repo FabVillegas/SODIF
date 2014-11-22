@@ -2,13 +2,12 @@
   <script type="text/ng-template" id="alertMessage"><h2>Verificar que se llenaron las fechas.</h2></script>
   <script type="text/ng-template" id="queryMessage"><h2>Verificar que se seleccionó el tipo de consulta.</h2></script>
 
-  <div class="container">
-    <div class="parametersContainer eight columns">
+  <div id="parameters" class="container">
+    <div class="three columns">
       <div>
-        <select ng-model="chartQuery">
+        <select ng-model="requestedtQuery">
           <option value="" disabled>Mostrar por</option>
-        	<option>Autoridad</option>
-        	<option>Tipo de juzgado</option>
+          <option>Autoridad</option>
           <option>Tipo de juicio</option>
           <option>Municipio</option>
           <option>Menores</option>
@@ -16,56 +15,41 @@
         </select>
       </div>
     </div>
-
-    <div class="parametersContainer eight columns">
+    <div class="nine columns">
       <label>Entre :</label>
         <script>
-          $('.datepickerBegin').pickadate({
-            today: 'Hoy',
-            clear: 'Cancelar',
-            close: 'Cerrar',
-            monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
-            format: 'dd/mm/yyyy',
-            formatSubmit: 'yyyy/mm/dd'
-          });
-
-          $('.datepickerEnd').pickadate({
-            today: 'Hoy',
-            clear: 'Cancelar',
-            close: 'Cerrar',
-            monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
-            formatSubmit: 'yyyy/mm/dd',
-            format: 'dd/mm/yyyy'});
+          $('.datepickerBegin').pickadate({today: 'Hoy',clear: 'Borrar',close: 'Cerrar',monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],format: 'dd/mm/yyyy',formatSubmit: 'yyyy/mm/dd' });
+          $('.datepickerEnd').pickadate({today: 'Hoy',clear: 'Borrar',close: 'Cerrar',monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],formatSubmit: 'yyyy/mm/dd',format: 'dd/mm/yyyy' });
         </script>
-      <input class="datepickerBegin" ng-model="beginDate">
+      <input ng-model="beginDate" ng-change="reset()" class="datepickerBegin">
       <label> y </label>
-      <input class="datepickerEnd" ng-model="endDate" ng-change="guardar()">
+      <input ng-model="endDate" ng-change="reset()" class="datepickerEnd">
     </div>
+    <div class="four columns">
+      <button ng-click="getData()" class="consultaButton" type="submit">Consultar</button>
+    </div>
+  </div>
 
+  <div class="container">
     <div class="chartContainer sixteen columns">
       <div ng-click="show()" ng-show="isShown" data-ac-chart="chartType" data-ac-data="data" data-ac-config="config" class="chart"></div>
     </div>
-
-    <div class="sixteen columns">
-      <label>Tipos de Juzgado</label>
-      <table>
+    <h3 ng-show="isJuzgadosQuery">Tipos de Juzgados</h3>
+    <div ng-show="isJuzgadosQuery" class="sixteen columns" ng-repeat="foo in foos">
+      <table class="eight columns offset-by-four">
         <tr>
-          <th>Titulo</th>
-          <th>Valor</th>
+          <th>{{foo.month}}</th>
         </tr>
-        <tr ng-repeat="check in checkList">
-          <td>{{check.name}}</td>
-          <td>{{check.value}}</td>
-        </tr>
-        <tr ng-repeat="foo in foos">
-          <td>{{foo.month}}</td>
-          <td>{{foo.values}}</td>
+        <tr ng-repeat="surrogate in foo.values" class="juzgadosList">
+          <td class="juzgadosValues">
+            {{surrogate[0].name}}
+          </td>
+          <td class="juzgadosValues">
+            {{surrogate[0].value}}
+          </td>
         </tr>
       </table>
     </div>
-
   </div>
 
 </div>

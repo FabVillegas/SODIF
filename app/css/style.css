@@ -327,3 +327,37 @@ ______________________________________________ */
     margin-top: 50px;
     margin-bottom: 50px;
   }
+
+/*
+GRAFICA
+______________________________________________ */
+
+  #parameters{
+    margin-top: 25px;
+  }
+
+  .consultaButton{
+    width: 100%;
+    padding: 5px 0 5px 0;
+    margin: 0;
+    background-color: #70B44A;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 3px solid #002D00;
+    font-size: 1em;
+    color: white;
+  }
+
+  .consultaButton:hover{
+    background-color: #002D00;
+  }
+
+  .juzgadosValues{
+    width: 100%;
+  }
+
+  .juzgadosList{
+    text-align: left;
+    list-style-type: none;
+  }
