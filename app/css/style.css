@@ -335,7 +335,6 @@ ______________________________________________ */
   #parameters{
     margin-top: 25px;
   }
-
   .consultaButton{
     width: 100%;
     padding: 5px 0 5px 0;
@@ -348,16 +347,27 @@ ______________________________________________ */
     font-size: 1em;
     color: white;
   }
-
   .consultaButton:hover{
     background-color: #002D00;
   }
-
-  .juzgadosValues{
-    width: 100%;
+  .seriesTable{
+    margin-top: 10px;
+    border: 2px solid rgb(212,212,212);
   }
-
-  .juzgadosList{
+  .seriesTable th, .seriesTable td{
+    text-align: center;
+    width: 20%;
+  }
+  .seriesTable .importantTH{
+    width: 65%;
     text-align: left;
-    list-style-type: none;
+  }
+  .seriesTable tr:nth-child(even){
+    background: #D4D4D4;
+  }
+  .seriesTable tr:nth-child(odd){
+    background: #FFFFFF;
+  }
+  .juzgadoName{
+    text-align: left !important;
   }

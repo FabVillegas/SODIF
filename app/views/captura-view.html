@@ -6,7 +6,7 @@
     <!-- Administrativo derecha -->
     <div class="sixteen columns">
       <label class="capturaLabel">Fecha :</label>
-      <script>$('.datepicker').pickadate({today: 'Hoy',clear: 'Cancelar',close: 'Cerrar',monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],formatSubmit: 'yyyy/mm/dd',format: 'dd mmmm yyyy'});
+      <script>$('.datepicker').pickadate({selectYears: true ,selectMonths: true ,today: 'Hoy',clear: 'Cancelar',close: 'Cerrar',monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],formatSubmit: 'yyyy/mm/dd',format: 'dd mmmm yyyy'});
       </script>
       <input ng-model="oficio.fecha" class="capturaDate datepicker">
     </div>
@@ -22,26 +22,26 @@
       </select>
       <select ng-model="$parent.oficio.tipoJuzgado" ng-if="oficio.autoridad == 'PGJE'" class="animate-if capturaDropdown">
         <option value="" disabled>Tipo de Juzgado</option>
-        <option>A.M.P JF  No. 1 GPE</option>
-        <option>A.M.P. INV. No. 1 EJFDS GPE</option>
-        <option>A.M.P. INV. No. 2 EJFDS GPE</option>
-        <option>A.M.P. INV. No. 3 EJFDS GPE</option>
-        <option>A.M.P. INV. No. 4 EJFDS GPE</option>
-        <option>A.M.P. INV. UI No. 1  HOMICIDIO Y LESIONES DOLOSAS GPE</option>
-        <option>A.M.P. INV. UI No. 2  HOMICIDIO Y LESIONES DOLOSAS GPE</option>
-        <option>A.M.P. INV.  No. 6  ROBOS GPE</option>
-        <option>A.M.P. INV. No. 1 EJFDS STA CATARINA</option>
-        <option>A.M.P. INV. No. 2 EJFDS STA CATARINA</option>
-        <option>A.M.P. INV. No. 3 EJFDS STA CATARINA</option>
-        <option>A.M.P. UNIDAD 1 APODACA</option>
-        <option>A.M.P. UNIDAD 2 APODACA</option>
-        <option>A.M.P. No. 1 ESPECIAL JUSTICIA PARA ADOLESCENTES</option>
-        <option>A.M.P. No. 2 ESPECIAL JUSTICIA PARA ADOLESCENTES</option>
-        <option>A.M.P. No. 3 ESPECIAL JUSTICIA PARA ADOLESCENTES</option>
-        <option>A.M.P. UI JF MONTERREY</option>
-        <option>A.M.P. JF No. 6</option>
-        <option>A.M.P. JF No. 3 ESCOBEDO</option>
-        <option>A.M.P. ESPECIALIZADA JUICIO ORAL</option>
+        <option>AMP JF  No 1 GPE</option>
+        <option>AMP INV No 1 EJFDS GPE</option>
+        <option>AMP INV No 2 EJFDS GPE</option>
+        <option>AMP INV No 3 EJFDS GPE</option>
+        <option>AMP INV No 4 EJFDS GPE</option>
+        <option>AMP INV UI No 1  HOMICIDIO Y LESIONES DOLOSAS GPE</option>
+        <option>AMP INV UI No 2  HOMICIDIO Y LESIONES DOLOSAS GPE</option>
+        <option>AMP INV  No 6  ROBOS GPE</option>
+        <option>AMP INV No 1 EJFDS STA CATARINA</option>
+        <option>AMP INV No 2 EJFDS STA CATARINA</option>
+        <option>AMP INV No 3 EJFDS STA CATARINA</option>
+        <option>AMP UNIDAD 1 APODACA</option>
+        <option>AMP UNIDAD 2 APODACA</option>
+        <option>AMP No 1 ESPECIAL JUSTICIA PARA ADOLESCENTES</option>
+        <option>AMP No 2 ESPECIAL JUSTICIA PARA ADOLESCENTES</option>
+        <option>AMP No 3 ESPECIAL JUSTICIA PARA ADOLESCENTES</option>
+        <option>AMP UI JF MONTERREY</option>
+        <option>AMP JF No 6</option>
+        <option>AMP JF No 3 ESCOBEDO</option>
+        <option>AMP ESPECIALIZADA JUICIO ORAL</option>
       </select>
       <select ng-model="$parent.oficio.tipoJuzgado" ng-if="oficio.autoridad == 'PJF'" class="animate-if capturaDropdown">
         <option value="" disabled>Tipo de Juzgado</option>
@@ -202,7 +202,7 @@
         <option>Asistencia social en acto judicial de convivencia</option>
       </select>
       <select ng-model="$parent.oficio.tipoDeServicio" ng-if="oficio.servicio == 'Asistencia' && oficio.areaDeServicio == 'Legal'" class="animate-if capturaDropdown">
-        <option disabled>Tipo de Servicio</option>
+        <option value="" disabled>Tipo de Servicio</option>
         <option>Acompañamiento a menor de edad durante desahogo de diligencia</option>
       </select>
     </div>

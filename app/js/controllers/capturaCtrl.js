@@ -1,8 +1,8 @@
 angular.module('sodif').controller('capturaCtrl', capturaCtrl);
 
-capturaCtrl.$inject = ['$scope', '$firebase', '$state', 'firebaseRefFactory', 'divideDateFactory', 'ngDialog'];
+capturaCtrl.$inject = ['$scope', '$firebase', '$state', 'firebaseRefFactory', 'dateFactory', 'divideDateFactory', 'ngDialog'];
 
-function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, divideDateFactory, ngDialog){
+function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, dateFactory, divideDateFactory, ngDialog){
 
   // Variables auxiliares
   $scope.itExists = -1;
@@ -49,7 +49,6 @@ function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, divideDateFa
     $scope.listaMenores.splice(index, 1);
   };
 
-
   $scope.save = function(){
     if($scope.oficio.fecha == undefined || $scope.oficio.numero == undefined){
       ngDialog.open({
@@ -58,11 +57,55 @@ function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, divideDateFa
     }
     else{
       // guardar a capturas por año y mes
-      var capturaRef = $firebase(new Firebase(firebaseRefFactory.getRefToSave(divideDateFactory.getYear($scope.oficio.fecha),divideDateFactory.getMonth($scope.oficio.fecha))));
+      //var capturaRef = $firebase(new Firebase(firebaseRefFactory.getRefToSave(divideDateFactory.getYear($scope.oficio.fecha),divideDateFactory.getMonth($scope.oficio.fecha))));
+      var capturaYear = dateFactory.getYear($scope.oficio.fecha);
+      var capturaMonth = dateFactory.getMonth($scope.oficio.fecha);
+
+      var capturaRef = $firebase(new Firebase(firebaseRefFactory.getRefToSaveCaptura(capturaYear, capturaMonth)));
+
       capturaRef.$set($scope.oficio.numero, true);
       // guardar a oficios en general
-      var ref = $firebase(new Firebase('https://sistema-de-oficios.firebaseio.com/oficios'));
-      ref.$set($scope.oficio.numero, $scope.oficio);
+
+      var oficioRef = $firebase(new Firebase(firebaseRefFactory.getRefToSaveOficio()));
+      oficioRef.$set($scope.oficio.numero, $scope.oficio);
+
+      //Referencia al contador de todos los oficios
+      var contOficios = new Firebase(firebaseRefFactory.getContadorOficiosRef(capturaYear, capturaMonth));
+      //Incrementa el contador en 1; si no hay alguno establecido, lo crea
+      contOficios.transaction(function(cont){
+        return (cont || 0) + 1;
+      });
+
+      //Referencia al contador de todos los menores
+      var contMenores = new Firebase(firebaseRefFactory.getContadorMenoresRef(capturaYear, capturaMonth));
+      var menoresEnOficio = $scope.oficio.menores.length; //Numero de menores en el oficio
+      contMenores.transaction(function (cont){
+        return (cont || 0) + menoresEnOficio;
+      });
+
+      //Referencia al contador de autoridad (PGJE, PJF, PJE)
+      var contAutoridad = new Firebase(firebaseRefFactory.getContadorAutoridadRef(capturaYear, capturaMonth, $scope.oficio.autoridad));
+      contAutoridad.transaction(function (cont) {
+        return (cont || 0) + 1;
+      });
+
+      //Referencia para contar Juzgados
+      var contJuzgado = new Firebase(firebaseRefFactory.getContadorJuzgadoRef(capturaYear, capturaMonth, $scope.oficio.autoridad, $scope.oficio.tipoJuzgado));
+      contJuzgado.transaction(function (cont) {
+        return (cont || 0) + 1;
+      });
+
+      //Referencia al contador de juicios
+      var contJuicio = new Firebase(firebaseRefFactory.getContadorJuiciosRef(capturaYear, capturaMonth, $scope.oficio.tipoDeJuicio));
+      contJuicio.transaction(function (cont) {
+        return (cont || 0) + 1;
+      });
+
+      //Referencia al contador de municipios
+      var contMunicipio = new Firebase(firebaseRefFactory.getContadorMunicipiosRef(capturaYear, capturaMonth, $scope.oficio.municipio));
+      contMunicipio.transaction(function (cont) {
+        return (cont || 0) + 1;
+      });
 
       ngDialog.open({
         template: 'successMessage',

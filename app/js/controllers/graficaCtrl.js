@@ -3,32 +3,30 @@ angular.module('sodif').controller('graficaCtrl', graficaCtrl);
 graficaCtrl.$inject = ['$scope', '$state', '$firebase', 'ngDialog', 'destroyerFactory', 'dateFactory', 'firebaseRefFactory', 'divideDateFactory', 'chartQueryFactory'];
 
 function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, dateFactory,  firebaseRefFactory, divideDateFactory, chartQueryFactory){
-  // variables auxiliares
-  $scope.monthsArray = [];
-  $scope.checkList = [];
-  $scope.detallesArray = [];
-  $scope.variable = 'autoridad';
-  $scope.list = [];
-  $scope.isShown = true;
+  // variables que si se usan
   $scope.chartType = 'bar';
-  $scope.fooArray = [];
-  $scope.foos = [];
-  $scope.series = [];
+  $scope.juzgadosQueryIsShown = false;
+  $scope.chartIsShown = false;
+  $scope.isNotAutoridadQuery = false;
+  $scope.isDisabled = true;
 
   $scope.query = '';
-  $scope.autoridadArray = [];
 
-  $scope.isJuzgadosQuery = false;
-  $scope.tempFirebaseObj;
-
-
-
-
-  // variables que si se usan
   $scope.callbacks = [];
   $scope.series = [];
   $scope.dataArray = [];
   $scope.monthsRange = [];
+  $scope.tiposDeJuzgados = [];
+  $scope.autoridadArray = [];
+
+  $scope.disableButtons = function(){
+    if($scope.isDisabled)
+      $scope.disableStyle = {'background-color':'grey', 'border-color':'black'};
+    else
+      $scope.disableStyle = {};
+  };
+
+  $scope.disableButtons();
 
   $scope.configChart = function(){
     $scope.config = { // config chart
@@ -45,7 +43,6 @@ function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, date
     };
   };
 
-
   $scope.show = function(){
     /* resuelve el bug de la grafica, no modificar */
   };
@@ -57,17 +54,24 @@ function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, date
   };
 
   $scope.reset = function(){
+    $scope.isDisabled = false;
+    $scope.disableButtons();
+    $scope.chartIsShown = false;
+    $scope.isNotAutoridadQuery = false;
+    $scope.juzgadosQueryIsShown = false;
     /* limpiar arreglos */
     $scope.cleanArray($scope.series);
     $scope.cleanArray($scope.series);
     $scope.cleanArray($scope.dataArray);
     $scope.cleanArray($scope.monthsRange);
+    $scope.cleanArray($scope.tiposDeJuzgados);
+    $scope.cleanArray($scope.autoridadArray);
     /* limpiar grafica */
     $scope.config = {};
     $scope.data = {};
     /* destruir las referencias a firebase */
     for(var i = 0; i < $scope.callbacks.length; i++){
-      if($scope.query == 'juicio'){
+      if($scope.query != 'autoridad'){
         destroyerFactory.destroyFirebaseObject($scope.callbacks[i]);
       }
       else{ /* las referencias en el query de autoridad no son $asArray ni $asObject, debe destruirse con otro metodo */
@@ -79,6 +83,20 @@ function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, date
       destroyerFactory.destroyFirebaseObject($scope.secondCall);
       destroyerFactory.destroyFirebaseObject($scope.thirdCall);
     }
+  };
+
+  $scope.totalesQuery = function(firebaseRef, index){ /* aplica para consulta de total de niños o de oficios */
+    console.log(firebaseRef);
+    $scope.callbacks[index] = $firebase(new Firebase(firebaseRef)).$asObject();
+    var sync = $scope.callbacks[index].$inst()._ref.path.n[2];
+    $scope.callbacks[index].$loaded().then(function(child){
+      console.log(child.$value);
+      $scope.dataArray.push({
+        x: sync,
+        y: [child.$value]
+      });
+      console.log($scope.dataArray);
+    });
   };
 
   $scope.juicioQuery = function(firebaseRef, index){
@@ -98,7 +116,8 @@ function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, date
             if($scope.series[j].spot == index){
               $scope.series[index].labels.push({
                 placeInChart: i+1,
-                name: child[i].$id
+                name: child[i].$id,
+                val: child[i].$value
               });
             }
           }
@@ -112,9 +131,9 @@ function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, date
   };
 
   $scope.tiposDeJuzgadoQuery = function(firebaseObj, index, ref){
-    $scope.isJuzgadosQuery = true;
+    $scope.juzgadosQueryIsShown = true;
     $scope.firstCall = $firebase(firebaseObj).$asArray();
-    $scope.foos.push({
+    $scope.tiposDeJuzgados.push({
       place: index,
       month: $scope.firstCall.$inst()._ref.path.n[2],
       values: []
@@ -128,19 +147,14 @@ function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, date
           var syncRef3 = $scope.thirdCall.$inst()._ref.path.n[2];
           $scope.thirdCall.$loaded().then(function(thirdChild){
             var callbacksRef = $firebase($scope.callbacks[index]).$ref().path.n[2];
-            $scope.list.push({
-              name: thirdChild.$id,
-              value: thirdChild.$value,
-              place: index
-            });
-            for($scope.w = 0; $scope.w < $scope.foos.length; $scope.w ++){
-              if($scope.foos[$scope.w].place == index){
+            for($scope.w = 0; $scope.w < $scope.tiposDeJuzgados.length; $scope.w ++){
+              if($scope.tiposDeJuzgados[$scope.w].place == index){
                 var surrogate = [{
                   name: thirdChild.$id,
                   value: thirdChild.$value,
                   place: index
                 }];
-                $scope.foos[index].values.push(surrogate);
+                $scope.tiposDeJuzgados[index].values.push(surrogate);
               }
             }
           });
@@ -167,13 +181,13 @@ function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, date
       var tempMonth = divideDateFactory.getMonthName(arrayData[$scope.z]);
       var tempRef = firebaseRefFactory.getContadoresRef() + tempYear + '/' + tempMonth + '/' + $scope.query;
       //$scope.juicioQuery(tempRef, $scope.z);
-      $scope.callbacks[$scope.z] = new Firebase(tempRef);
+      //$scope.callbacks[$scope.z] = new Firebase(tempRef);
       queryFunction(tempRef, $scope.z);
     }
   };
 
   $scope.expectQuery = function(arrayData){
-    $scope.isShown = true;
+    $scope.chartIsShown = true;
     $scope.data = { series: [], data: [] }; // no cambiar nada ya funciona
     $scope.cleanArray($scope.autoridadArray);
     switch($scope.requestedtQuery){
@@ -190,8 +204,39 @@ function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, date
         $scope.query = 'juicio';
         $scope.resolveQuery(arrayData, $scope.juicioQuery);
         $scope.configChart();
+        $scope.isNotAutoridadQuery = true;
         $scope.data = { // config chart data
           series: [],
+          data: $scope.dataArray,
+        };
+        break;
+      case 'Municipio':
+        $scope.query = 'municipio';
+        $scope.resolveQuery(arrayData, $scope.juicioQuery);
+        $scope.configChart();
+        $scope.isNotAutoridadQuery = true;
+        $scope.data = { // config chart data
+          series: [],
+          data: $scope.dataArray,
+        };
+        break;
+      case 'Menores':
+        $scope.query = 'totalMenores';
+        $scope.resolveQuery(arrayData, $scope.totalesQuery);
+        $scope.configChart();
+        $scope.isNotAutoridadQuery = true;
+        $scope.data = { // config chart data
+          series: ['Total de menores'],
+          data: $scope.dataArray,
+        };
+        break;
+      case 'Oficios':
+        $scope.query = 'totalOficios';
+        $scope.resolveQuery(arrayData, $scope.totalesQuery);
+        $scope.configChart();
+        $scope.isNotAutoridadQuery = true;
+        $scope.data = { // config chart data
+          series: ['Total de oficios'],
           data: $scope.dataArray,
         };
         break;

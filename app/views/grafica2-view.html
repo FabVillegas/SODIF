@@ -1,11 +1,11 @@
 <div ng-controller="graficaCtrl">
   <script type="text/ng-template" id="alertMessage"><h2>Verificar que se llenaron las fechas.</h2></script>
   <script type="text/ng-template" id="queryMessage"><h2>Verificar que se seleccionó el tipo de consulta.</h2></script>
-
+  <script type="text/ng-template" id="mesesMessage"><h2>Límites de las fechas no estan bien definidas.</h2></script>
   <div id="parameters" class="container">
     <div class="three columns">
       <div>
-        <select ng-model="requestedtQuery">
+        <select ng-model="requestedtQuery" ng-change="reset()">
           <option value="" disabled>Mostrar por</option>
           <option>Autoridad</option>
           <option>Tipo de juicio</option>
@@ -18,50 +18,58 @@
     <div class="nine columns">
       <label>Entre :</label>
         <script>
-          $('.datepickerBegin').pickadate({today: 'Hoy',clear: 'Borrar',close: 'Cerrar',monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],format: 'dd/mm/yyyy',formatSubmit: 'yyyy/mm/dd' });
-          $('.datepickerEnd').pickadate({today: 'Hoy',clear: 'Borrar',close: 'Cerrar',monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],formatSubmit: 'yyyy/mm/dd',format: 'dd/mm/yyyy' });
+          $('.datepickerBegin').pickadate({selectYears: true,selectMonths: true,today: 'Hoy',clear: 'Borrar',close: 'Cerrar',monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],format: 'dd/mm/yyyy',formatSubmit: 'yyyy/mm/dd' });
+          $('.datepickerEnd').pickadate({selectYears: true,selectMonths: true,today: 'Hoy',clear: 'Borrar',close: 'Cerrar',monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],formatSubmit: 'yyyy/mm/dd',format: 'dd/mm/yyyy' });
         </script>
       <input ng-model="beginDate" ng-change="reset()" class="datepickerBegin">
       <label> y </label>
       <input ng-model="endDate" ng-change="reset()" class="datepickerEnd">
     </div>
     <div class="four columns">
-      <button ng-click="getData()" class="consultaButton" type="submit">Consultar</button>
+      <button ng-click="getData()" ng-disabled="isDisabled" ng-style="disableStyle" class="consultaButton" type="submit">Consultar</button>
     </div>
   </div>
-
   <div class="container">
     <div class="chartContainer sixteen columns">
-      <div ng-click="show()" ng-show="isShown" data-ac-chart="chartType" data-ac-data="data" data-ac-config="config" class="chart"></div>
+      <div ng-click="show()" ng-show="chartIsShown" data-ac-chart="chartType" data-ac-data="data" data-ac-config="config" class="chart"></div>
     </div>
-    <div class="sixteen columns" ng-repeat="serie in series">
-      <table class="eight columns offset-by-four">
+    <h3 ng-show="isNotAutoridadQuery">Información de las series de la gráfica</h3>
+    <div  ng-show="isNotAutoridadQuery" class="sixteen columns" ng-repeat="serie in series">
+      <table class="seriesTable eight columns">
         <tr>
-          <th>{{serie.month}}</th>
+          <td>{{serie.month}}</td>
+        </tr>
+        <tr>
+          <th>Posición</th>
+          <th>Nombre</th>
+          <th>Cantidad</th>
         </tr>
         <tr ng-repeat="label in serie.labels">
-          <td class="juzgadosValues">
-            {{label.placeInChart}} {{label.name}}
-          </td>
+          <td>{{label.placeInChart}}</td>
+          <td class="importantTH">{{label.name}}</td>
+          <td>{{label.val}}</td>
         </tr>
       </table>
     </div>
-    <h3 ng-show="isJuzgadosQuery">Tipos de Juzgados</h3>
-    <div ng-show="isJuzgadosQuery" class="sixteen columns" ng-repeat="foo in foos">
-      <table class="eight columns offset-by-four">
+    <h3 ng-show="juzgadosQueryIsShown">Tipos de Juzgados</h3>
+    <div ng-show="juzgadosQueryIsShown" class="sixteen columns" ng-repeat="tipoDeJuzgado in tiposDeJuzgados">
+      <table class="seriesTable eight columns">
         <tr>
-          <th>{{foo.month}}</th>
+          <th>{{tipoDeJuzgado.month}}</th>
         </tr>
-        <tr ng-repeat="surrogate in foo.values" class="juzgadosList">
-          <td class="juzgadosValues">
+        <tr>
+          <th>Juzgado</th>
+          <th>Cantidad</th>
+        </tr>
+        <tr ng-repeat="surrogate in tipoDeJuzgado.values" class="juzgadosList">
+          <td class="juzgadoName">
             {{surrogate[0].name}}
           </td>
-          <td class="juzgadosValues">
+          <td>
             {{surrogate[0].value}}
           </td>
         </tr>
       </table>
     </div>
   </div>
-
 </div>

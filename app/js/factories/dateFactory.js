@@ -1,7 +1,20 @@
-angular.module('sodif').factory('dateFactory', function($firebase){
+angular.module('sodif').factory('dateFactory', ['ngDialog', function(ngDialog){
   return{
     test: function(firebaseObj, index, firebaseArray){
       console.log(1);
+    },
+    getMonth: function(date){
+      var x;
+      for(var i = 3; i < date.length - 1; i++){
+        if(date.substring(i,i+1) == ' ')
+          x = i;
+      }
+      var y = date.substring(3,x);
+      return y;
+    },
+    getYear: function(date){
+      var x = date.substring(date.length - 4, date.length);
+      return x;
     },
     getNumericMonth: function(date){
       var x;
@@ -27,6 +40,9 @@ angular.module('sodif').factory('dateFactory', function($firebase){
       datTo.setDate(1);
       datTo.setMonth(parseInt(this.getNumericMonth(to) - 1));
       datTo.setFullYear(parseInt(this.getNumericYear(to)));
+      if(datTo < datFrom){
+        ngDialog.open({ template: 'mesesMessage' });
+      }
       var fromYear =  datFrom.getFullYear();
       var toYear =  datTo.getFullYear();
       var diffYear = (12 * (toYear - fromYear)) + datTo.getMonth();
@@ -36,4 +52,4 @@ angular.module('sodif').factory('dateFactory', function($firebase){
       return arr;
     },
   };
-});
+}]);
