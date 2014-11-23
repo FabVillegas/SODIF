@@ -89,13 +89,17 @@ function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, dateFactory,
       $scope.verifyAutoridades('PJE');
       $scope.verifyAutoridades('PJF');
       // guardar a capturas por año y mes
-      //var capturaRef = $firebase(new Firebase(firebaseRefFactory.getRefToSave(divideDateFactory.getYear($scope.oficio.fecha),divideDateFactory.getMonth($scope.oficio.fecha))));
       var capturaYear = dateFactory.getYear($scope.oficio.fecha);
       var capturaMonth = dateFactory.getMonth($scope.oficio.fecha);
 
-      var capturaRef = $firebase(new Firebase(firebaseRefFactory.getRefToSaveCaptura(capturaYear, capturaMonth)));
 
-      capturaRef.$set($scope.oficio.numero, true);
+      var capturaRef = new Firebase(firebaseRefFactory.getRefToSaveCaptura(capturaYear, capturaMonth));
+      capturaRef.child($scope.oficio.numero).setWithPriority(true, $scope.oficio.numero);
+
+      //var capturaRef = $firebase(new Firebase(firebaseRefFactory.getRefToSaveCaptura(capturaYear, capturaMonth)));
+      //capturaRef.$setWithPriority($scope.oficio.numero, true, 1);
+      //var priorityRef = new Firebase(firebaseRefFactory.getRefToSaveCaptura(capturaYear, capturaMonth));
+      //priorityRef.setPriority(1);
       // guardar a oficios en general
 
       var oficioRef = $firebase(new Firebase(firebaseRefFactory.getRefToSaveOficio()));

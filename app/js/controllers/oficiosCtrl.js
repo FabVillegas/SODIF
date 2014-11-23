@@ -13,6 +13,31 @@ function oficiosCtrl($scope, $firebase, $state, $stateParams, $location, firebas
   $scope.monthsRef = '';
   $scope.oficios = [];
   $scope.mySelections = [];
+  $scope.first = 1;
+  $scope.last = 10;
+
+  $scope.test = function(){
+    var ref = new Firebase('https://sistema-de-oficios.firebaseio.com/capturas/2014/Noviembre');
+    console.log('Entro');
+    ref.on("child_added", function(snapshot) {
+      console.log(snapshot.val());
+      console.log(snapshot.getPriority());
+    });
+
+    /*
+    ref.limitToFirst(2).on("child_added", function(snapshot) {
+      console.log('first');
+      console.log(snapshot.key());
+    });
+    ref.limitToLast(5).on("child_added", function(snapshot) {
+      console.log('last');
+      console.log(snapshot.key());
+    });*/
+  };
+  $scope.test();
+
+
+
   /* metodos ng-change*/
   $scope.getYears = function(){ /* Traer los años que tienen capturas para delimitar que oficios traer y aligerar carga */
     $scope.yearsRef = $firebase(new Firebase(firebaseRefFactory.goToRef('capturas'))).$asArray();
