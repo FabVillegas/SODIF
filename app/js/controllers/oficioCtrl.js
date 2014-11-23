@@ -69,6 +69,8 @@ function oficioCtrl($scope, $firebase, $state, $stateParams, firebaseRefFactory,
       closeByDocument: true,
       closeByEscape: true
     });
+    $scope.isDisabled = true;
+    $scope.disableButtons();
   };
 
   $scope.disableButtons();

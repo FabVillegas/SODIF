@@ -52,7 +52,7 @@ config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRou
 				controller: 'menuCtrl'
 			},
 			body:{
-				templateUrl: 'views/grafica2-view.html',
+				templateUrl: 'views/grafica-view.html',
 				controller: 'graficaCtrl'
 			}
 		}

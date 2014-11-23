@@ -122,7 +122,7 @@ function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, date
         }
       }
       $scope.dataArray.push({
-        x: sync.substring(0,2),
+        x: sync.substring(0,3),
         y: aux,
       });
     });
@@ -168,7 +168,7 @@ function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, date
     $scope.callbacks[index].once('value', function(datEvent){
       var sync = $firebase($scope.callbacks[index]);
       $scope.autoridadArray.push({
-        x: sync.$ref().path.n[2],
+        x: sync.$ref().path.n[2].substring(0,3),
         y: [datEvent.val().PGJE.contAutoridad, datEvent.val().PJE.contAutoridad, datEvent.val().PJF.contAutoridad]
       });
     });
