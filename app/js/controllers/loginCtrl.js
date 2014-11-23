@@ -10,6 +10,11 @@ function loginCtrl($scope, $state, $firebase, $firebaseAuth, firebaseRefFactory,
   var dataRef = new Firebase(firebaseRefFactory.getMainRef());
   $scope.authObj = $firebaseAuth(dataRef);
 
+  $scope.closeDialog = function(){
+    ngDialog.close({
+      template: 'errorMessage',
+    });
+  };
   // metodos ng-click
   $scope.login = function(){
     if($scope.user.name == undefined){
@@ -19,7 +24,7 @@ function loginCtrl($scope, $state, $firebase, $firebaseAuth, firebaseRefFactory,
         closeByEscape: true
       });
     }
-    else{
+    if($scope.user.password != ''){
       $scope.authObj.$authWithPassword({
         email: $scope.user.name,
         password: $scope.user.password
@@ -35,6 +40,9 @@ function loginCtrl($scope, $state, $firebase, $firebaseAuth, firebaseRefFactory,
         $scope.user.password = '';
         console.error("Authentication failed:", error);
       });
+    }
+    else{
+      $scope.closeDialog();
     }
   };
 };
