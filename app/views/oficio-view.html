@@ -1,5 +1,5 @@
 <div ng-controller="oficioCtrl">
-
+  <script type="text/ng-template" id="editSuccessMessage"><h2>Actualización de oficio exitosa.</h2></script>
   <div id="administrativo" class="container">
     <div class="three columns offset-by-thirteen">
       <button ng-click="enableEdit()" class="borrarCaptura" type="submit">Editar</button>
@@ -12,7 +12,7 @@
       <label class="capturaLabel">Fecha :</label>
       <script>$('.datepicker').pickadate({selectYears: true ,selectMonths: true ,today: 'Hoy',clear: 'Cancelar',close: 'Cerrar',monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],formatSubmit: 'yyyy/mm/dd',format: 'dd mmmm yyyy'});
       </script>
-      <input ng-model="oficio.fecha" ng-disabled="isDisabled" class="capturaDate datepicker">
+      <input ng-model="oficio.fecha" ng-disabled="true" class="capturaDate datepicker">
     </div>
     <div class="eight columns">
       <label class="warning">Número de oficio: </label>
@@ -218,7 +218,7 @@
     <div class="four columns">
       <button ng-click="addMenorToList()" ng-disabled="isDisabled" ng-style="disableStyle" class="addMenor menorDropdown">Agregar menor</button>
     </div>
-    <div ng-repeat="menor in listaMenores track by $index" class="animate-if">
+    <div ng-repeat="menor in oficio.menores track by $index" class="animate-if">
       <div class="menorContainer sixteen columns">
         <input ng-model="menor.edad" ng-disabled="isDisabled" class="menorDropdown" type="text" placeholder="Edad">
         <select ng-model="menor.sexo" ng-disabled="isDisabled" class="menorDropdown">
@@ -234,7 +234,7 @@
       </div>
       <div class="eight columns">
         <select ng-model="menor.respuesta" ng-disabled="isDisabled" class="capturaDropdown">
-          <option value="" disabled>Respuesta brindada a petición</option>
+          <option disabled>Respuesta brindada a petición</option>
           <option>Si</option>
           <option>No</option>
         </select>
@@ -246,11 +246,10 @@
           <option>No se precisa el objeto de la evaluación, se requiere previa aclaración.</option>
           <option>Error en los nombres que se contienen, se solicitó aclaración previa.</option>
         </select>
-        <div class="eliminateMenorContainer">
-          <button ng-click="cancelMenor()" ng-disabled="isDisabled" ng-style="eraseMenorDisabled" class="eraseMenor" type="submit">Borrar Menor</button>
+        <div class="eliminateMenorContainerInOficio">
+          <button ng-click="cancelMenor($index)" ng-disabled="isDisabled" ng-style="eraseMenorDisabled" class="eraseMenor" type="submit">Borrar Menor</button>
         </div>
-        <button ng-click="addMenorToMenores($index)" ng-disabled="isDisabled" ng-style="disableStyle" class="saveMenor" type="submit">Guardar Menor</button>
-      </div>
+       </div>
     </div>
   </div>
 

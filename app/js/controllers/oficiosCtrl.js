@@ -114,7 +114,6 @@ function oficiosCtrl($scope, $firebase, $state, $stateParams, $location, firebas
     $scope.oficiosArray.$watch(function(child_added){
       var temporaryCapturaObj = $firebase(new Firebase(firebaseRefFactory.getCaptura($scope.selectedYear, $scope.selectedMonth, child_added.key))).$asObject();
       temporaryCapturaObj.$loaded().then(function(child){
-        console.log(child.$value);
         if(child.$value){
           var temporaryOficioObj = $firebase(new Firebase(firebaseRefFactory.getOficio(child_added.key))).$asObject();
           $scope.oficios.push(temporaryOficioObj);

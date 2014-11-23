@@ -48,5 +48,14 @@ angular.module('sodif').factory('dateFactory', ['ngDialog', function(ngDialog){
       }
       return arr;
     },
+    getMonthName: function(date){
+      var x;
+      for(i = 0; i < date.length - 1; i++){
+        if(date.substring(i,i+1) == ' ')
+          x = i;
+      }
+      var y = date.substring(0,x);
+      return y;
+    },
   };
 }]);

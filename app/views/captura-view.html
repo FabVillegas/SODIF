@@ -12,7 +12,7 @@
     </div>
 
     <div class="eight columns">
-      <input ng-model="oficio.numero" class="capturaInput" type="text" placeholder="Folio de oficio">
+      <input ng-model="oficio.numero" ng-change="checkOficios()" class="capturaInput" type="text" placeholder="Folio de oficio">
       <label ng-show="itExists != -1" class="warning">Oficio ya existe.</label>
       <select ng-model="oficio.autoridad" class="capturaDropdown">
         <option disabled>Autoridad correspondiente</option>

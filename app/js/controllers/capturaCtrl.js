@@ -3,7 +3,6 @@ angular.module('sodif').controller('capturaCtrl', capturaCtrl);
 capturaCtrl.$inject = ['$scope', '$firebase', '$state', 'firebaseRefFactory', 'dateFactory', 'ngDialog'];
 
 function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, dateFactory, ngDialog){
-
   // Variables auxiliares
   $scope.itExists = -1;
   $scope.toCheckList = [];
@@ -65,6 +64,19 @@ function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, dateFactory,
     $scope.listaMenores = [];
   };
 
+  $scope.verifyAutoridades = function(autoridad){
+    var capturaYear = dateFactory.getYear($scope.oficio.fecha);
+    var capturaMonth = dateFactory.getMonth($scope.oficio.fecha);
+    var createFirstAutoridad = $firebase(new Firebase(firebaseRefFactory.getContadorAutoridadRef(capturaYear, capturaMonth, autoridad))).$asObject();
+    createFirstAutoridad.$loaded().then(function(event){
+      if(event.$value === null){
+        createFirstAutoridad.$value = 0;
+        createFirstAutoridad.$save();
+        createFirstAutoridad.$destroy();
+      }
+    });
+  };
+
   $scope.save = function(){
     if($scope.oficio.fecha == undefined || $scope.oficio.numero == undefined){
       ngDialog.open({
@@ -72,6 +84,10 @@ function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, dateFactory,
       });
     }
     else{
+
+      $scope.verifyAutoridades('PGJE');
+      $scope.verifyAutoridades('PJE');
+      $scope.verifyAutoridades('PJF');
       // guardar a capturas por año y mes
       //var capturaRef = $firebase(new Firebase(firebaseRefFactory.getRefToSave(divideDateFactory.getYear($scope.oficio.fecha),divideDateFactory.getMonth($scope.oficio.fecha))));
       var capturaYear = dateFactory.getYear($scope.oficio.fecha);
@@ -98,6 +114,10 @@ function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, dateFactory,
       contMenores.transaction(function (cont){
         return (cont || 0) + menoresEnOficio;
       });
+
+
+
+
 
       //Referencia al contador de autoridad (PGJE, PJF, PJE)
       var contAutoridad = new Firebase(firebaseRefFactory.getContadorAutoridadRef(capturaYear, capturaMonth, $scope.oficio.autoridad));
@@ -140,19 +160,16 @@ function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, dateFactory,
     });
   };
 
-  $scope.fillList = function(){
-    $scope.toCheckList = $firebase(new Firebase('https://sistema-de-oficios.firebaseio.com/oficios')).$asArray();
+  $scope.checkOficios = function(){
+    $scope.toCheckList = $firebase(new Firebase(firebaseRefFactory.getRefToSaveOficio())).$asArray();
     $scope.toCheckList.$watch(function(child_added){
-      if($scope.oficio.numero != undefined){
         $scope.itExists = $scope.toCheckList.$indexFor($scope.oficio.numero);
         if($scope.itExists != -1)
           $scope.disableStyle = {'background-color':'grey', 'border-color':'black'};
         else
           $scope.disableStyle = {};
-      }
     });
   };
 
-  $scope.fillList();
   $scope.cleanInputs();
 };

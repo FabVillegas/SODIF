@@ -310,6 +310,13 @@ ______________________________________________ */
     margin-bottom: 50px;
   }
 
+  .eliminateMenorContainerInOficio {
+    width: 25%;
+    margin: 20px 0 0 80%;
+    padding: 0;
+    display: inline-block;
+  }
+
 /*
 GRAFICA
 ______________________________________________ */

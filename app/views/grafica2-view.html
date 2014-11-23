@@ -34,7 +34,7 @@
       <div ng-click="show()" ng-show="chartIsShown" data-ac-chart="chartType" data-ac-data="data" data-ac-config="config" class="chart"></div>
     </div>
     <h3 ng-show="isNotAutoridadQuery">Información de las series de la gráfica</h3>
-    <div  ng-show="isNotAutoridadQuery" class="sixteen columns" ng-repeat="serie in series">
+    <div  ng-show="isNotAutoridadQuery" class="sixteen columns" ng-repeat="serie in series" ng-if="serie.labels[0] != undefined">
       <table class="seriesTable eight columns">
         <tr>
           <td>{{serie.month}}</td>
@@ -52,7 +52,7 @@
       </table>
     </div>
     <h3 ng-show="juzgadosQueryIsShown">Tipos de Juzgados</h3>
-    <div ng-show="juzgadosQueryIsShown" class="sixteen columns" ng-repeat="tipoDeJuzgado in tiposDeJuzgados">
+    <div ng-show="juzgadosQueryIsShown" class="sixteen columns" ng-repeat="tipoDeJuzgado in tiposDeJuzgados" ng-if="tipoDeJuzgado.values[0] != undefined">
       <table class="seriesTable eight columns">
         <tr>
           <th>{{tipoDeJuzgado.month}}</th>

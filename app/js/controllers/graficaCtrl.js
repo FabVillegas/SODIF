@@ -1,8 +1,8 @@
 angular.module('sodif').controller('graficaCtrl', graficaCtrl);
 
-graficaCtrl.$inject = ['$scope', '$state', '$firebase', 'ngDialog', 'destroyerFactory', 'dateFactory', 'firebaseRefFactory', 'divideDateFactory', 'chartQueryFactory'];
+graficaCtrl.$inject = ['$scope', '$state', '$firebase', 'ngDialog', 'destroyerFactory', 'dateFactory', 'firebaseRefFactory'];
 
-function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, dateFactory,  firebaseRefFactory, divideDateFactory, chartQueryFactory){
+function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, dateFactory,  firebaseRefFactory){
   // variables que si se usan
   $scope.chartType = 'bar';
   $scope.juzgadosQueryIsShown = false;
@@ -62,7 +62,7 @@ function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, date
     /* limpiar arreglos */
     $scope.cleanArray($scope.series);
     $scope.cleanArray($scope.series);
-    $scope.cleanArray($scope.dataArray);
+    $scope.cleanArray($scope.dataArray); $scope.dataArray = [];
     $scope.cleanArray($scope.monthsRange);
     $scope.cleanArray($scope.tiposDeJuzgados);
     $scope.cleanArray($scope.autoridadArray);
@@ -90,12 +90,10 @@ function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, date
     $scope.callbacks[index] = $firebase(new Firebase(firebaseRef)).$asObject();
     var sync = $scope.callbacks[index].$inst()._ref.path.n[2];
     $scope.callbacks[index].$loaded().then(function(child){
-      console.log(child.$value);
       $scope.dataArray.push({
-        x: sync,
+        x: sync.substring(0,3),
         y: [child.$value]
       });
-      console.log($scope.dataArray);
     });
   };
 
@@ -124,10 +122,11 @@ function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, date
         }
       }
       $scope.dataArray.push({
-        x: sync,
+        x: sync.substring(0,2),
         y: aux,
       });
     });
+
   };
 
   $scope.tiposDeJuzgadoQuery = function(firebaseObj, index, ref){
@@ -177,11 +176,9 @@ function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, date
 
   $scope.resolveQuery = function(arrayData, queryFunction){
     for($scope.z = 0; $scope.z < arrayData.length; $scope.z++){
-      var tempYear = divideDateFactory.getYear(arrayData[$scope.z]);
-      var tempMonth = divideDateFactory.getMonthName(arrayData[$scope.z]);
+      var tempYear = dateFactory.getYear(arrayData[$scope.z]);
+      var tempMonth = dateFactory.getMonthName(arrayData[$scope.z]);
       var tempRef = firebaseRefFactory.getContadoresRef() + tempYear + '/' + tempMonth + '/' + $scope.query;
-      //$scope.juicioQuery(tempRef, $scope.z);
-      //$scope.callbacks[$scope.z] = new Firebase(tempRef);
       queryFunction(tempRef, $scope.z);
     }
   };
@@ -224,7 +221,7 @@ function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, date
         $scope.query = 'totalMenores';
         $scope.resolveQuery(arrayData, $scope.totalesQuery);
         $scope.configChart();
-        $scope.isNotAutoridadQuery = true;
+        $scope.isNotAutoridadQuery = false;
         $scope.data = { // config chart data
           series: ['Total de menores'],
           data: $scope.dataArray,
@@ -234,7 +231,7 @@ function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, date
         $scope.query = 'totalOficios';
         $scope.resolveQuery(arrayData, $scope.totalesQuery);
         $scope.configChart();
-        $scope.isNotAutoridadQuery = true;
+        $scope.isNotAutoridadQuery = false;
         $scope.data = { // config chart data
           series: ['Total de oficios'],
           data: $scope.dataArray,

@@ -1,49 +1,50 @@
 angular.module('sodif').controller('oficioCtrl', oficioCtrl);
 
-oficioCtrl.$inject = ['$scope', '$firebase', '$state', '$stateParams', 'firebaseRefFactory'];
+oficioCtrl.$inject = ['$scope', '$firebase', '$state', '$stateParams', 'firebaseRefFactory', 'ngDialog'];
 
-function oficioCtrl($scope, $firebase, $state, $stateParams, firebaseRefFactory){
-  $scope.oficioRef = new Firebase(firebaseRefFactory.getOficio($stateParams.numero));
-  $scope.oficioObj = $firebase($scope.oficioRef).$asObject();
+function oficioCtrl($scope, $firebase, $state, $stateParams, firebaseRefFactory, ngDialog){
+  $scope.oficio = {
+    autoridad: '',
+    tipoJuzgado : '',
+    tipoDeJuicio : '',
+    municipio : '',
+    servicio : '',
+    areaDeServicio : '',
+    tipoDeServicio : '',
+    menores: []
+  };
 
-  /*
-  $scope.capturaRef = new Firebase(firebaseRefFactory.getOficio($stateParams.numero));
-  $scope.capturaObj = $firebase($scope.capturaRef).$asObject();
-*/
-  $scope.capturaRef = new Firebase(firebaseRefFactory.getCaptura($stateParams.year, $stateParams.month, $stateParams.numero));
-  $scope.capturaObj = $firebase($scope.capturaRef).$asObject();
-  $scope.capturaObj.$loaded().then(function(data){
-    console.log($scope.capturaObj.$value);
-  });
-
-
-
-  $scope.oficio = {};
-  $scope.listaMenores = [];
 
   $scope.isDisabled = true;
   $scope.itExists = -1;
 
-/*
-  $scope.oficioObj.$loaded().then(function(){
-    $scope.oficio = $scope.oficioObj;
-    $scope.listaMenores = $scope.oficioObj.menores;
-  });
-*/
+  $scope.oficioRef = new Firebase(firebaseRefFactory.getOficio($stateParams.numero));
+  $scope.oficioObj = $firebase($scope.oficioRef).$asObject();
+
   $scope.oficioObj.$bindTo($scope, 'objData').then(function(){
     $scope.oficio = $scope.oficioObj;
+
+    //$scope.oficio.menores = [];
   }),
 
-  /*
-  var ref = new Firebase(URL); // assume value here is { foo: "bar" }
-var obj = $firebase(ref).$asObject();
+  // agregar menor a lista
+  $scope.addMenorToList = function(){
+    if($scope.oficio.menores == undefined){
+      $scope.oficio.menores = [];
+    }
+    $scope.oficio.menores.push({
+      edad: '',
+      sexo: '',
+      nombre: '',
+      apellidoPaterno: '',
+      apellidoMaterno: '',
+      respuesta: 'Respuesta brindada a petición'
+    });
+  };
 
-  bj.$bindTo($scope, "data").then(function() {
-   console.log($scope.data); // { foo: "bar" }
-   $scope.data.foo = "baz";  // will be saved to Firebase
-   ref.$set({foo: "baz"});   // this would update Firebase and $scope.data
-});
-*/
+  $scope.cancelMenor = function(index){
+    $scope.oficio.menores.splice(index, 1);
+  };
 
   $scope.disableButtons = function(){
     if($scope.isDisabled){
@@ -61,15 +62,14 @@ var obj = $firebase(ref).$asObject();
     $scope.disableButtons();
   };
 
-  $scope.cancelMenor = function(){
-    console.log(1);
-  };
-
   $scope.editOficio = function(){
-    console.log($scope.oficio.fecha);
-    
+    $scope.oficioObj.$save();
+    ngDialog.open({
+      template: 'editSuccessMessage',
+      closeByDocument: true,
+      closeByEscape: true
+    });
   };
-
 
   $scope.disableButtons();
 

@@ -50,7 +50,11 @@ angular.module('sodif').factory('firebaseRefFactory', function(){
 		},
 		getCaptura: function(year, month, number){
 			var url = this.getRefToSaveCaptura(year,month) + number;
-			return url; 
-		}
+			return url;
+		},
+		getContadoresRef: function(){
+			var url = this.getMainRef() + 'contadores/';
+			return url;
+		},
 	};
 });
