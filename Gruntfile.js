@@ -24,7 +24,7 @@ module.exports = function(grunt) {
         dest: 'build/',    // destination folder
         expand: true,    // allow dynamic building
         flatten: true,   // remove all unnecessary nesting
-        ext: '.min.css'   // replace .js to .min.js
+        ext: '.min.css'   // replace .css to .min.css
       }
     },
     obfuscator: {
@@ -46,6 +46,6 @@ module.exports = function(grunt) {
   // Default task(s).
   grunt.registerTask('minjs', ['uglify']);
   grunt.registerTask('mincss', ['cssmin']);
-  grunt.registerTask('obfusjs', ['obfuscator']);
+  grunt.registerTask('obfuscatejs', ['obfuscator']);
 
 };
