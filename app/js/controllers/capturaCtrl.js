@@ -3,7 +3,7 @@ angular.module('sodif').controller('capturaCtrl', capturaCtrl);
 capturaCtrl.$inject = ['$scope', '$firebase', '$state', 'firebaseRefFactory', 'dateFactory', 'ngDialog'];
 
 function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, dateFactory, ngDialog){
-  // Variables auxiliares
+  /* Variables auxiliares */
   $scope.itExists = -1;
   $scope.toCheckList = [];
 
@@ -12,7 +12,7 @@ function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, dateFactory,
     $scope.oficio.tipoJuzgado = '';
   };
 
-  // Instanciar objeto Oficio
+  /* Instanciar objeto Oficio */
   $scope.oficio = {
     autoridad: '',
     tipoJuzgado : '',
@@ -24,10 +24,10 @@ function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, dateFactory,
     menores: []
   };
 
-  // Arreglos de menores
+  /* Arreglos de menores */
   $scope.listaMenores = [];
 
-  // agregar menor a lista
+  /* agregar menor a lista */
   $scope.addMenorToList = function(){
     $scope.listaMenores.push({
       edad: '',
@@ -39,7 +39,7 @@ function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, dateFactory,
     });
   };
 
-  // agregar menor de lista a arreglo de objetos menores
+  /* agregar menor de lista a arreglo de objetos menores */
   $scope.addMenorToMenores = function(index){
     $scope.oficio.menores.push($scope.listaMenores[index]);
     $scope.listaMenores.splice(index, 1);
@@ -64,9 +64,7 @@ function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, dateFactory,
     $scope.listaMenores = [];
   };
 
-  $scope.verifyAutoridades = function(autoridad){
-    var capturaYear = dateFactory.getYear($scope.oficio.fecha);
-    var capturaMonth = dateFactory.getMonth($scope.oficio.fecha);
+  $scope.verifyAutoridades = function(capturaYear, capturaMonth, autoridad){
     var createFirstAutoridad = $firebase(new Firebase(firebaseRefFactory.getContadorAutoridadRef(capturaYear, capturaMonth, autoridad))).$asObject();
     createFirstAutoridad.$loaded().then(function(event){
       if(event.$value === null){
@@ -77,82 +75,94 @@ function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, dateFactory,
     });
   };
 
+  $scope.verifyPriorityCounter = function(capturaYear, capturaMonth){
+    var createPriorityCounter = $firebase(new Firebase(firebaseRefFactory.getRefToSaveCaptura(capturaYear, capturaMonth) + 'contPrioridad')).$asObject();
+    createPriorityCounter.$loaded().then(function(event){
+      if(event.$value === null){
+        createPriorityCounter.$value = 0;
+        createPriorityCounter.$save();
+        createPriorityCounter.$destroy();
+      }
+    });
+  };
+
   $scope.save = function(){
     if($scope.oficio.fecha == undefined || $scope.oficio.numero == undefined){
       ngDialog.open({
         template: 'alertMessage'
       });
     }
-    else{
+    if($scope.oficio.autoridad == 'Autoridad correspondiente' || $scope.oficio.tipoJuzgado == 'Tipo de Juzgado' ||
+      $scope.oficio.tipoDeJuicio == 'Tipo de Juicio' || $scope.oficio.municipio == 'Municipio' || $scope.oficio.servicio == 'Servicio' ||
+      $scope.oficio.areaDeServicio == 'Area de Servicio' || $scope.oficio.areaDeServicio == 'Area de Servicio' ||
+      $scope.oficio.tipoDeServicio == 'Tipo de Servicio'){
+      ngDialog.open({
+        template: 'missingFieldsMessage'
+      });
 
-      $scope.verifyAutoridades('PGJE');
-      $scope.verifyAutoridades('PJE');
-      $scope.verifyAutoridades('PJF');
-      // guardar a capturas por año y mes
+    }
+    else{
       var capturaYear = dateFactory.getYear($scope.oficio.fecha);
       var capturaMonth = dateFactory.getMonth($scope.oficio.fecha);
-
-
-      var capturaRef = new Firebase(firebaseRefFactory.getRefToSaveCaptura(capturaYear, capturaMonth));
-      capturaRef.child($scope.oficio.numero).setWithPriority(true, $scope.oficio.numero);
-
-      //var capturaRef = $firebase(new Firebase(firebaseRefFactory.getRefToSaveCaptura(capturaYear, capturaMonth)));
-      //capturaRef.$setWithPriority($scope.oficio.numero, true, 1);
-      //var priorityRef = new Firebase(firebaseRefFactory.getRefToSaveCaptura(capturaYear, capturaMonth));
-      //priorityRef.setPriority(1);
-      // guardar a oficios en general
-
+      /* verificar que contadores de las autoridades y prioridad ya existen, sino, se crean */
+      $scope.verifyAutoridades(capturaYear, capturaMonth, 'PGJE');
+      $scope.verifyAutoridades(capturaYear, capturaMonth, 'PJE');
+      $scope.verifyAutoridades(capturaYear, capturaMonth, 'PJF');
+      $scope.verifyPriorityCounter(capturaYear, capturaMonth);
+      /* obtener y guardar captura con prioridad, posteriormente aumentar contPrioridad */
+      var priorityVal = $firebase(new Firebase(firebaseRefFactory.getRefToSaveCaptura(capturaYear, capturaMonth) + 'contPrioridad')).$asObject();
+      var id = $scope.oficio.numero;
+      priorityVal.$loaded().then(function(child){
+        console.log(child.$value);
+        var capturaRef = new Firebase(firebaseRefFactory.getRefToSaveCaptura(capturaYear, capturaMonth));
+        capturaRef.child(id).setWithPriority(true, child.$value);
+      });
+      var contPrioridad = new Firebase(firebaseRefFactory.getRefToSaveCaptura(capturaYear, capturaMonth) + 'contPrioridad');
+      contPrioridad.transaction(function (cont){
+        return (cont || 0) + 1;
+      });
+      /* guardar a oficios en general */
       var oficioRef = $firebase(new Firebase(firebaseRefFactory.getRefToSaveOficio()));
       oficioRef.$set($scope.oficio.numero, $scope.oficio);
-
-      //Referencia al contador de todos los oficios
+      /* Referencia al contador de todos los oficios */
       var contOficios = new Firebase(firebaseRefFactory.getContadorOficiosRef(capturaYear, capturaMonth));
-      //Incrementa el contador en 1; si no hay alguno establecido, lo crea
+      /* Incrementa el contador en 1; si no hay alguno establecido, lo crea */
       contOficios.transaction(function(cont){
         return (cont || 0) + 1;
       });
-
-      //Referencia al contador de todos los menores
+      /* Referencia al contador de todos los menores */
       var contMenores = new Firebase(firebaseRefFactory.getContadorMenoresRef(capturaYear, capturaMonth));
       var menoresEnOficio = $scope.oficio.menores.length; //Numero de menores en el oficio
       contMenores.transaction(function (cont){
         return (cont || 0) + menoresEnOficio;
       });
-
-
-
-
-
-      //Referencia al contador de autoridad (PGJE, PJF, PJE)
+      /* Referencia al contador de autoridad (PGJE, PJF, PJE) */
       var contAutoridad = new Firebase(firebaseRefFactory.getContadorAutoridadRef(capturaYear, capturaMonth, $scope.oficio.autoridad));
       contAutoridad.transaction(function (cont) {
         return (cont || 0) + 1;
       });
-
-      //Referencia para contar Juzgados
+      /* Referencia para contar Juzgados */
       var contJuzgado = new Firebase(firebaseRefFactory.getContadorJuzgadoRef(capturaYear, capturaMonth, $scope.oficio.autoridad, $scope.oficio.tipoJuzgado));
       contJuzgado.transaction(function (cont) {
         return (cont || 0) + 1;
       });
-
-      //Referencia al contador de juicios
+      /* Referencia al contador de juicios */
       var contJuicio = new Firebase(firebaseRefFactory.getContadorJuiciosRef(capturaYear, capturaMonth, $scope.oficio.tipoDeJuicio));
       contJuicio.transaction(function (cont) {
         return (cont || 0) + 1;
       });
-
-      //Referencia al contador de municipios
+      /* Referencia al contador de municipios */
       var contMunicipio = new Firebase(firebaseRefFactory.getContadorMunicipiosRef(capturaYear, capturaMonth, $scope.oficio.municipio));
       contMunicipio.transaction(function (cont) {
         return (cont || 0) + 1;
       });
-
+      /* mensaje de exito */
       ngDialog.open({
         template: 'successMessage',
         closeByDocument: true,
         closeByEscape: true
       });
-
+      /* dar paso a un nuevo oficio */
       $scope.cleanInputs();
     }
   };

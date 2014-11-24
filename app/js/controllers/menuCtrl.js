@@ -36,8 +36,7 @@ function menuCtrl($scope, $firebase, $firebaseAuth, $state, $location, firebaseR
   $scope.logout = function(){
     var dataRef = new Firebase(firebaseRefFactory.getMainRef());
     $scope.loginObj = $firebaseAuth(dataRef);
-    console.log("Logged out:");
-    console.log($scope.loginObj.$getAuth());
+    console.log("Logged out");
     $scope.loginObj.$unauth()
     $state.go('login');
   };

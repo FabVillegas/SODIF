@@ -16,29 +16,7 @@ function oficiosCtrl($scope, $firebase, $state, $stateParams, $location, firebas
   $scope.first = 1;
   $scope.last = 10;
 
-  $scope.test = function(){
-    var ref = new Firebase('https://sistema-de-oficios.firebaseio.com/capturas/2014/Noviembre');
-    console.log('Entro');
-    ref.on("child_added", function(snapshot) {
-      console.log(snapshot.val());
-      console.log(snapshot.getPriority());
-    });
-
-    /*
-    ref.limitToFirst(2).on("child_added", function(snapshot) {
-      console.log('first');
-      console.log(snapshot.key());
-    });
-    ref.limitToLast(5).on("child_added", function(snapshot) {
-      console.log('last');
-      console.log(snapshot.key());
-    });*/
-  };
-  $scope.test();
-
-
-
-  /* metodos ng-change*/
+  /* metodos ng-change */
   $scope.getYears = function(){ /* Traer los años que tienen capturas para delimitar que oficios traer y aligerar carga */
     $scope.yearsRef = $firebase(new Firebase(firebaseRefFactory.goToRef('capturas'))).$asArray();
     $scope.yearsRef.$watch(function(child_added){
@@ -66,7 +44,7 @@ function oficiosCtrl($scope, $firebase, $state, $stateParams, $location, firebas
       /* Destruir arreglos y objetos antes de dejar esta view */
       $scope.yearsRef.$destroy();
       $scope.monthsRef.$destroy();
-      $scope.oficiosArray.$destroy();
+      $scope.oficiosRef.off();
       $location.path('/oficios/' + year + '/' + month + '/' + numero);
     }
     else{
@@ -132,20 +110,36 @@ function oficiosCtrl($scope, $firebase, $state, $stateParams, $location, firebas
     }
   };
 
+
+  $scope.changePagination = function(rule){
+    if(rule == 'next'){
+      $scope.first += 10;
+      $scope.last += 10;
+      $scope.getOficios();
+    }
+    if(rule == 'back'){
+      $scope.first -= 10;
+      if($scope.first < 1){
+        $scope.first = 1;
+      }
+      $scope.last -= 10;
+      if($scope.last < 10){
+        $scope.last = 10;
+      }
+      $scope.getOficios();
+    }
+  };
+
   // ng-change
   $scope.getOficios = function(){ /* Traer los oficios desde Firebase */
     $scope.oficios = [];
-    $scope.oficiosArray = $firebase(new Firebase(firebaseRefFactory.getRefToSaveCaptura($scope.selectedYear, $scope.selectedMonth))).$asArray();
-    $scope.oficiosArray.$watch(function(child_added){
-      var temporaryCapturaObj = $firebase(new Firebase(firebaseRefFactory.getCaptura($scope.selectedYear, $scope.selectedMonth, child_added.key))).$asObject();
-      temporaryCapturaObj.$loaded().then(function(child){
-        if(child.$value){
-          var temporaryOficioObj = $firebase(new Firebase(firebaseRefFactory.getOficio(child_added.key))).$asObject();
-          $scope.oficios.push(temporaryOficioObj);
-          $scope.myData = $scope.oficios;
-        }
-      });
-
+    $scope.oficiosRef = new Firebase(firebaseRefFactory.getRefToSaveCaptura($scope.selectedYear, $scope.selectedMonth));
+    $scope.oficiosRef.startAt($scope.first).endAt($scope.last).on("child_added", function(snapshot) {
+      if(snapshot.val()){
+        var temporaryOficioObj = $firebase(new Firebase(firebaseRefFactory.getOficio(snapshot.key()))).$asObject();
+        $scope.oficios.push(temporaryOficioObj);
+        $scope.myData = $scope.oficios;
+      }
     });
   };
 
