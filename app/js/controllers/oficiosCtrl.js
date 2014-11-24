@@ -9,7 +9,7 @@ function oficiosCtrl($scope, $firebase, $state, $stateParams, $location, firebas
     $scope.last = 10;
     $scope.getOficios();
   };
-  
+
   /* variables necesarias */
   $scope.myData = [];
   $scope.years = [];
@@ -91,7 +91,8 @@ function oficiosCtrl($scope, $firebase, $state, $stateParams, $location, firebas
     data: 'myData',
     enablePinning: true,
     columnDefs : [
-      { field: 'numero', displayName: 'Folio', width: 100, pinned: true, headerCellTemplate: 'views/filterHeaderTemplate.html'},
+      { field: 'numero', displayName: '# Control', width: 100, pinned: true, headerCellTemplate: 'views/filterHeaderTemplate.html'},
+      { field: 'folio', displayName: '# Folio', width: 100, pinned: true, headerCellTemplate: 'views/filterHeaderTemplate.html'},
       { field: 'fecha', displayName: 'Fecha', width: 175, pinned: true, headerCellTemplate: 'views/filterHeaderTemplate.html'},
       { field: 'autoridad', displayName: 'Autoridad Correspondiente', width: 250, headerCellTemplate: 'views/filterHeaderTemplate.html'},
       { field: 'tipoJuzgado', displayName: 'Tipo de Juzgado', width: 250 , headerCellTemplate: 'views/filterHeaderTemplate.html'},

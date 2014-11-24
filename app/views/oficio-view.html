@@ -15,8 +15,10 @@
       <input ng-model="oficio.fecha" ng-disabled="true" class="capturaDate datepicker">
     </div>
     <div class="eight columns">
-      <label class="warning">Número de oficio: </label>
-      <input ng-model="oficio.numero" ng-disabled="true" class="capturaInput" type="text" placeholder="Folio de oficio">
+      <label class="warning"># de control: </label>
+      <input ng-model="oficio.numero" ng-disabled="true" class="capturaInput" type="text" placeholder="Folio de control">
+      <label class="warning"># de folio: </label>
+      <input ng-model="oficio.folio" ng-disabled="true" class="capturaInput" type="text" placeholder="Folio de oficio">
       <select ng-model="oficio.autoridad" ng-disabled="isDisabled" class="capturaDropdown">
         <option value="" disabled>Autoridad correspondiente</option>
         <option>PGJE</option>
