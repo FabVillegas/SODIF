@@ -30,7 +30,7 @@ function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, date
 
   $scope.configChart = function(){
     $scope.config = { // config chart
-      title: $scope.chartQuery,
+      title: $scope.requestedtQuery,
       tooltips: true,
       labels: false,
       mouseover: function() {},
@@ -86,7 +86,6 @@ function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, date
   };
 
   $scope.totalesQuery = function(firebaseRef, index){ /* aplica para consulta de total de niños o de oficios */
-    console.log(firebaseRef);
     $scope.callbacks[index] = $firebase(new Firebase(firebaseRef)).$asObject();
     var sync = $scope.callbacks[index].$inst()._ref.path.n[2];
     $scope.callbacks[index].$loaded().then(function(child){

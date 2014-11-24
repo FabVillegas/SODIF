@@ -29,10 +29,10 @@ module.exports = function(grunt) {
     },
     obfuscator: {
       files: [
-        'app/js/**/*.js'
+        'app/js/controllers/*.js'
       ],
       entry: 'app.js',
-      out: 'build/*.js',
+      out: 'build/obfuscated.js',
       strings: true,
       root: __dirname
     }

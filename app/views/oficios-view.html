@@ -5,7 +5,7 @@
         <option value="" disabled>Años</option>
         <option ng-repeat="year in years">{{year.key}}</option>
       </select>
-      <select ng-model="selectedMonth" ng-change="getOficios()">
+      <select ng-model="selectedMonth" ng-change="afterChangingMonth()">
         <option value="" disabled>Mes</option>
         <option ng-repeat="month in months">{{month.key}}</option>
       </select>

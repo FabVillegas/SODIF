@@ -1,8 +1,8 @@
 angular.module('sodif').controller('oficioCtrl', oficioCtrl);
 
-oficioCtrl.$inject = ['$scope', '$firebase', '$state', '$stateParams', 'firebaseRefFactory', 'ngDialog'];
+oficioCtrl.$inject = ['$scope', '$firebase', '$state', '$stateParams', 'firebaseRefFactory', 'dateFactory', 'ngDialog'];
 
-function oficioCtrl($scope, $firebase, $state, $stateParams, firebaseRefFactory, ngDialog){
+function oficioCtrl($scope, $firebase, $state, $stateParams, firebaseRefFactory, dateFactory, ngDialog){
   $scope.oficio = {
     autoridad: '',
     tipoJuzgado : '',
@@ -20,6 +20,8 @@ function oficioCtrl($scope, $firebase, $state, $stateParams, firebaseRefFactory,
 
   $scope.oficioRef = new Firebase(firebaseRefFactory.getOficio($stateParams.numero));
   $scope.oficioObj = $firebase($scope.oficioRef).$asObject();
+
+  $scope.newMenores = 0;
 
   $scope.oficioObj.$bindTo($scope, 'objData').then(function(){
     $scope.oficio = $scope.oficioObj;
@@ -40,6 +42,7 @@ function oficioCtrl($scope, $firebase, $state, $stateParams, firebaseRefFactory,
       apellidoMaterno: '',
       respuesta: 'Respuesta brindada a petición'
     });
+    $scope.newMenores += 1;
   };
 
   $scope.cancelMenor = function(index){
@@ -71,7 +74,16 @@ function oficioCtrl($scope, $firebase, $state, $stateParams, firebaseRefFactory,
     });
     $scope.isDisabled = true;
     $scope.disableButtons();
+    var capturaYear = dateFactory.getYear($scope.oficio.fecha);
+    var capturaMonth = dateFactory.getMonth($scope.oficio.fecha);
+    /* Referencia al contador de todos los menores */
+    var contMenores = new Firebase(firebaseRefFactory.getContadorMenoresRef(capturaYear, capturaMonth));
+    var menoresEnOficio =   $scope.newMenores; //Numero de menores en el oficio
+    contMenores.transaction(function (cont){
+      return (cont || 0) + menoresEnOficio;
+    });
   };
+
 
   $scope.disableButtons();
 

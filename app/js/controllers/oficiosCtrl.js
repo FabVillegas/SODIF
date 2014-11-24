@@ -24,6 +24,8 @@ function oficiosCtrl($scope, $firebase, $state, $stateParams, $location, firebas
         key: child_added.key
       });
     });
+    $scope.first = 1;
+    $scope.last = 10;
   };
 
   $scope.getMonths = function(){ /* tras seleccionar año, se traen los meses que contengan capturas */
@@ -34,6 +36,8 @@ function oficiosCtrl($scope, $firebase, $state, $stateParams, $location, firebas
         key: child_added.key
       });
     });
+    $scope.first = 1;
+    $scope.last = 10;
   };
 
   /* metodos ng-click */
@@ -128,6 +132,12 @@ function oficiosCtrl($scope, $firebase, $state, $stateParams, $location, firebas
       }
       $scope.getOficios();
     }
+  };
+
+  $scope.afterChangingMonth = function(){
+    $scope.first = 1;
+    $scope.last = 10;
+    $scope.getOficios();
   };
 
   // ng-change
