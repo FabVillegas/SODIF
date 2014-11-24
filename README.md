@@ -1,7 +1,7 @@
 # Sistema de Administración de Oficos
 
 
-## Description Information
+## Description
 
 Sistema administrador de oficios para el centro de Procuraduría de la Defensa del Menor y la Familia diseñado para archivar los documentos de los oficios con el objetivo de un fácil acceso a reportes.
 
