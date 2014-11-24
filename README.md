@@ -1,30 +1,21 @@
-# sodif
-> [Yeoman](http://yeoman.io) generator
+# Sistema de Administración de Oficos
 
 
-## General Information
+## Description Information
+
+Sistema administrador de oficios para el centro de Procuraduría de la Defensa del Menor y la Familia diseñado para archivar los documentos de los oficios con el objetivo de un fácil acceso a reportes.
+
+
+### General Information
 
 This project makes use of the following:
 
-- angularjs
-- firebase
-- angularfire
-- firebaseSimpleLogin
-
-The file structure is simple, perfect to use with small and medium sized projects.
-
-### Install Yeoman
-
-```bash
-npm install -g yo
-```
-
-### Contribute
-
-Commit with messages that clearly state the change.
-
-```bash
-git clone git@github.com:FabVillegas/sodif.git
-npm install
-bower install
-```
+- "angular": "~1.3.3",
+- "angular-ui-router": "~0.2.11",
+- "jquery": "~2.1.1",
+- "angularfire": "~0.9.0",
+- "angular-charts": "~0.2.6",
+- "ng-grid": "~2.0.13",
+- "angular-animate": "~1.3.0",
+- "ngDialog": "~0.3.2",
+- "firebase": "~2.0.4"
