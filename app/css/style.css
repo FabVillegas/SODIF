@@ -379,6 +379,9 @@
     .loginInput{
       font-size: 1em;
     }
+    .logo{
+      margin-top: 25px;
+    }
     /* CAPTURA */
     .logoutButton{
       margin-left: 80%;
