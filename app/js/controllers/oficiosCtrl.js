@@ -4,6 +4,12 @@ oficiosCtrl.$inject = ['$scope', '$firebase', '$state', '$stateParams', '$locati
 
 function oficiosCtrl($scope, $firebase, $state, $stateParams, $location, firebaseRefFactory, dateFactory){
 
+  $scope.afterChangingMonth = function(){
+    $scope.first = 1;
+    $scope.last = 10;
+    $scope.getOficios();
+  };
+  
   /* variables necesarias */
   $scope.myData = [];
   $scope.years = [];
@@ -132,12 +138,6 @@ function oficiosCtrl($scope, $firebase, $state, $stateParams, $location, firebas
       }
       $scope.getOficios();
     }
-  };
-
-  $scope.afterChangingMonth = function(){
-    $scope.first = 1;
-    $scope.last = 10;
-    $scope.getOficios();
   };
 
   // ng-change
