@@ -22,6 +22,18 @@ function oficiosCtrl($scope, $firebase, $state, $stateParams, $location, firebas
   $scope.first = 1;
   $scope.last = 10;
 
+
+  $scope.cleanArrays = function(){
+    $scope.myData = [];
+    $scope.years = [];
+    $scope.months = [];
+    $scope.oficiosArray = [];
+    $scope.oficios = [];
+    $scope.mySelections = [];
+    console.log('cleaned');
+  };
+
+
   /* metodos ng-change */
   $scope.getYears = function(){ /* Traer los años que tienen capturas para delimitar que oficios traer y aligerar carga */
     $scope.yearsRef = $firebase(new Firebase(firebaseRefFactory.goToRef('capturas'))).$asArray();
@@ -155,5 +167,6 @@ function oficiosCtrl($scope, $firebase, $state, $stateParams, $location, firebas
   };
 
   // on loaded view methods
+  $scope.cleanArrays();
   $scope.getYears();
 };
