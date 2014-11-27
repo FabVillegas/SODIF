@@ -58,10 +58,14 @@
           <th>{{tipoDeJuzgado.month}}</th>
         </tr>
         <tr>
+          <th>Autoridad</th>
           <th>Juzgado</th>
           <th>Cantidad</th>
         </tr>
         <tr ng-repeat="surrogate in tipoDeJuzgado.values" class="juzgadosList">
+          <td>
+            {{surrogate[0].autoridad}}
+          </td>
           <td class="juzgadoName">
             {{surrogate[0].name}}
           </td>

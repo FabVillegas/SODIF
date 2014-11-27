@@ -17,6 +17,7 @@
       font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   }
 
+
   /* Login-view
   ================================================== */
 
@@ -55,16 +56,44 @@
   .loginButton:hover{
     background-color: rgb(223,109,7);
   }
+  .passwordButton{
+    width: 100%;
+    margin: 25px 0 0 0;
+    padding: 0;
+    background: none;
+    border: none;
+    font-size: 1em;
+    color: rgb(228,136,59);
+    cursor: pointer;
+  }
+  .passwordButton:hover{
+    text-decoration: underline;
+  }
+  footer{
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    background-color: black;
+    color: white;
+    text-align: center;
+  }
 
   /* Menu-view
   ================================================== */
 
-  .logo{
+  .logoDIF, .logoUDEM{
     width: 100%;
     height: auto;
   }
+  .logoUDEM{
+    margin-top: 25px;
+  }
   .appname{
     margin: 50px 0 0 0;
+    text-align: center;
+  }
+  .appsubtitle{
+    text-align: center;
   }
   .menuSupercontainer{
     background-color: rgb(228,136,59);
@@ -119,8 +148,8 @@
     background-color: rgb(223,109,7);
   }
   .logoutButton{
-    width: 15%;
-    margin: 10px 0 0 85%;
+    width: 100%;
+    margin: 10px 0 0 0;
     padding: 4px 0 4px 0;
     background: none;
     border: none;
@@ -158,6 +187,7 @@
     padding: 0 0 0 0;
     margin: 10px 0 0 0;
     font-size: 1em;
+    text-align: center
   }
   .capturaDropdown{
     width: 100%;
@@ -463,3 +493,6 @@
 
   /* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
   @media only screen and (max-width: 479px) {}
+
+
+/* Diseño visual aportado por Frida Medrano */

@@ -1,14 +1,32 @@
 <div ng-controller="menuCtrl">
+  <script type="text/ng-template" id="changePasswordTemplate">
+    <div>
+    <input ng-model="user.name" class="loginInput" type="text" maxlength="30" placeholder="Correo electrónico" />
+    <br><br>
+    <input ng-model="user.oldPassword" class="loginInput" type="password" maxlength="20"placeholder="Contraseña antigua">
+    <br><br>
+    <input ng-model="user.newPassword" class="loginInput" type="password" ng-enter="sendChangeRequest()" maxlength="10"placeholder="Contraseña nueva">
+    <br><br>
+    <button class="loginButton" type="submit" ng-click="sendChangeRequest()">Cambiar Contraseña</button>
+    <br><br>
+    </div>
+  </script>
   <div class="container">
-    <div class="sixteen columns">
-      <button ng-click="logout()" class="logoutButton" type="submit">Cerrar Sesión</button>
-    </div>
     <div class="four columns">
-      <img class="logo" src="css/images/logoDIFNL.jpg">
+      <button ng-click="changePassword()" class="logoutButton" type="submit" style="text-align:left">Cambiar contraseña</button>
     </div>
-    <div class="twelve columns">
+    <div class="four columns offset-by-eight">
+      <button ng-click="logout()" class="logoutButton" type="submit" style="text-align:right">Cerrar sesión</button>
+    </div>
+    <div class="three columns">
+      <img class="logoDIF" src="css/images/logoDIFNL.jpg">
+    </div>
+    <div class="ten columns">
       <h1 class="appname"> Sistema de Administración de Oficios </h1>
-      <h2 class="appsubtitle"> Procuraduría de Defensa del Menor y la Familia</h2>
+      <h3 class="appsubtitle"> Procuraduría de la Defensa del Menor y la Familia</h3>
+    </div>
+    <div class="three columns">
+      <img class="logoUDEM" src="css/images/logoUDEM.jpg">
     </div>
   </div>
   <div class="menuSupercontainer">

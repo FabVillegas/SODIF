@@ -1,8 +1,8 @@
 angular.module('sodif').controller('menuCtrl', menuCtrl);
 
-menuCtrl.$inject = ['$scope', '$firebase', '$firebaseAuth', '$state', '$location', 'firebaseRefFactory'];
+menuCtrl.$inject = ['$scope', '$firebase', '$firebaseAuth', '$state', '$location', 'firebaseRefFactory', 'ngDialog'];
 
-function menuCtrl($scope, $firebase, $firebaseAuth, $state, $location, firebaseRefFactory){
+function menuCtrl($scope, $firebase, $firebaseAuth, $state, $location, firebaseRefFactory, ngDialog){
 
 
   var checkSelectedLink = function(path){
@@ -39,5 +39,23 @@ function menuCtrl($scope, $firebase, $firebaseAuth, $state, $location, firebaseR
     console.log("Logged out");
     $scope.loginObj.$unauth()
     $state.go('login');
+  };
+
+  $scope.changePassword = function(){
+    ngDialog.open({
+      template: 'changePasswordTemplate',
+      scope: $scope,
+      closeByDocument: true,
+      closeByEscape: true
+    });
+  };
+
+  $scope.recoverPassword = function(){
+    ngDialog.open({
+      template: 'recoverPasswordTemplate',
+      scope: $scope,
+      closeByDocument: true,
+      closeByEscape: true
+    });
   };
 };

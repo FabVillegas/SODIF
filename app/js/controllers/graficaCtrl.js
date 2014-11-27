@@ -131,6 +131,7 @@ function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, date
   $scope.tiposDeJuzgadoQuery = function(firebaseObj, index, ref){
     $scope.juzgadosQueryIsShown = true;
     $scope.firstCall = $firebase(firebaseObj).$asArray();
+    console.log($scope.firstCall.$inst()._ref.path);
     $scope.tiposDeJuzgados.push({
       place: index,
       month: $scope.firstCall.$inst()._ref.path.n[2],
@@ -147,7 +148,9 @@ function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, date
             var callbacksRef = $firebase($scope.callbacks[index]).$ref().path.n[2];
             for($scope.w = 0; $scope.w < $scope.tiposDeJuzgados.length; $scope.w ++){
               if($scope.tiposDeJuzgados[$scope.w].place == index){
+                var autoridadName = child.key;
                 var surrogate = [{
+                  autoridad: autoridadName,
                   name: thirdChild.$id,
                   value: thirdChild.$value,
                   place: index

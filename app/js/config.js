@@ -29,6 +29,9 @@ config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRou
 				templateUrl: 'views/captura-view.html',
 				controller: 'capturaCtrl'
 			}
+		},
+		resolve:{
+			checkLogin: isLoggedIn
 		}
 	}).
 	state('oficios',{
@@ -42,6 +45,9 @@ config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRou
 				templateUrl: 'views/oficios-view.html',
 				controller: 'oficiosCtrl'
 			}
+		},
+		resolve:{
+			checkLogin: isLoggedIn
 		}
 	}).
 	state('grafica',{
@@ -55,6 +61,9 @@ config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRou
 				templateUrl: 'views/grafica-view.html',
 				controller: 'graficaCtrl'
 			}
+		},
+		resolve:{
+			checkLogin: isLoggedIn
 		}
 	}).
 	state('oficio',{
@@ -69,22 +78,21 @@ config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRou
 				controller: 'oficioCtrl'
 			}
 		},
+		resolve:{
+			checkLogin: isLoggedIn
+		}
 	});
 }]);
-/*
-var isLoggedIn = function($firebaseSimpleLogin, $state, firebaseRefFactory){
-	var dataRef = new Firebase(firebaseRefFactory.getMainRef());
-	var loginObj = $firebaseSimpleLogin(dataRef);
-	loginObj.$getCurrentUser().then(function(user){// this returns a promise
-		if(user){
-			console.log('Currently logged in as:');
-			console.log(loginObj.$getCurrentUser());
-			return;
-		}
-		else{
-			// send user to login state/route
-			$state.go('login');
-		}
-	});
+
+var isLoggedIn = function($firebase, $state, firebaseRefFactory){
+	var ref = new Firebase(firebaseRefFactory.getMainRef());
+	var authData = ref.getAuth();
+	if (authData) {
+	  console.log("Authenticated user with uid:", authData.uid);
+		return;
+	}
+	else{
+		// send user to login state/route
+		$state.go('login');
+	}
 };
-*/

@@ -12,9 +12,10 @@
     </div>
 
     <div class="eight columns">
-      <input ng-model="oficio.numero" ng-change="checkOficios()" class="capturaInput" type="text" placeholder="Folio de control">
-      <input ng-model="oficio.folio" class="capturaInput" type="text" placeholder="Folio de oficio">
-      <label ng-show="itExists != -1" class="warning">Oficio ya existe.</label>
+      <label class="warning">Número interno de control del oficio:</label>
+      <input ng-model="oficio.numero" ng-disabled="true" class="capturaInput" type="text" placeholder="Folio de control">
+      <br>
+      <input ng-model="oficio.folio" class="capturaInput" type="text" placeholder="Folio de oficio" maxlength="10">
       <select ng-model="oficio.autoridad" class="capturaDropdown">
         <option disabled>Autoridad correspondiente</option>
         <option>PGJE</option>
@@ -60,7 +61,7 @@
         <option>JUZ 1 DTO EN MATERIA ADMINISTRATIVA</option>
         <option>JUZ 2 DTO EN MATERIA AMINISTRATIVA</option>
       </select>
-      <input ng-model="$parent.oficio.tipoJuzgado" ng-click="erase()" ng-if="oficio.autoridad == 'PJE'" class="animate-if capturaDropdown" type="text" placeholder="Tipo de Juzgado" >
+      <input ng-model="$parent.oficio.tipoJuzgado" ng-click="erase()" ng-if="oficio.autoridad == 'PJE'" class="animate-if capturaDropdown" type="text" placeholder="Tipo de Juzgado" maxlength="50">
     </div>
     <!-- Administrativo izquierda -->
     <div class="eight columns">
@@ -218,7 +219,7 @@
     </div>
     <div ng-repeat="menor in listaMenores track by $index" class="animate-if">
       <div class="menorContainer sixteen columns">
-        <input ng-model="menor.edad" ng-disabled="isDisabled" class="menorDropdown" type="text" placeholder="Edad">
+        <input ng-model="menor.edad" ng-disabled="isDisabled" class="menorDropdown" type="number" placeholder="Edad" min="1" max="18">
         <select ng-model="menor.sexo" ng-disabled="isDisabled" class="menorDropdown">
           <option value="" disabled>Sexo</option>
           <option>Femenino</option>
@@ -226,9 +227,9 @@
         </select>
       </div>
       <div class="eight columns">
-        <input ng-model="menor.nombre" ng-disabled="isDisabled" class="menorInput" type="text" placeholder="Nombre(s)">
-        <input ng-model="menor.apellidoPaterno" ng-disabled="isDisabled" class="menorInput" type="text" placeholder="Apellido paterno">
-        <input ng-model="menor.apellidoMaterno" ng-disabled="isDisabled" class="menorInput" type="text" placeholder="Apellido materno">
+        <input ng-model="menor.nombre" ng-disabled="isDisabled" class="menorInput" type="text" placeholder="Nombre(s)" maxlength="30">
+        <input ng-model="menor.apellidoPaterno" ng-disabled="isDisabled" class="menorInput" type="text" placeholder="Apellido paterno" maxlength="20">
+        <input ng-model="menor.apellidoMaterno" ng-disabled="isDisabled" class="menorInput" type="text" placeholder="Apellido materno" maxlength="20">
       </div>
       <div class="eight columns">
         <select ng-model="menor.respuesta" ng-disabled="isDisabled" class="capturaDropdown">
@@ -257,7 +258,7 @@
   <script type="text/ng-template" id="missingFieldsMessage"><h2>Faltan campos por llenar en apartado Administrativo.</h2></script>
   <div id="submitContainer" class="container">
     <div id="descripcionContainer" class="sixteen columns">
-      <textarea ng-model="oficio.descripcion" class="descripcion" rows="5" placeholder="Descripción del oficio"></textarea>
+      <textarea ng-model="oficio.descripcion" class="descripcion" rows="5" placeholder="Descripción del oficio" maxlength="500"></textarea>
     </div>
     <div class="four columns">
       <button ng-click="save()" ng-enter="closeDialog()" ng-disabled="itExists != -1" class="guardarCaptura" ng-style="disableStyle" type="submit">Guardar oficio</button>

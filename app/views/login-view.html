@@ -1,24 +1,59 @@
 <div ng-controller="loginCtrl">
   <script type="text/ng-template" id="errorMessage">
-    <h2>Datos incorrectos. Favor de verificar usuario y contraseña.</h2>
+    <h2 style="text-align:center">Datos incorrectos. Favor de verificar usuario y contraseña.</h2>
+  </script>
+  <script type="text/ng-template" id="changePasswordTemplate">
+    <div>
+    <input ng-model="user.name" class="loginInput" type="text" maxlength="30" placeholder="Correo electrónico" />
+    <br><br>
+    <input ng-model="user.oldPassword" class="loginInput" type="password" maxlength="20"placeholder="Contraseña antigua">
+    <br><br>
+    <input ng-model="user.newPassword" class="loginInput" type="password" ng-enter="sendChangeRequest()" maxlength="10"placeholder="Contraseña nueva">
+    <br><br>
+    <button class="loginButton" type="submit" ng-click="sendChangeRequest()">Cambiar Contraseña</button>
+    <br><br>
+    </div>
+  </script>
+  <script type="text/ng-template" id="recoverPasswordTemplate">
+    <h3>¿Con que olvidaste tu contraseña? No te preocupes, ingresa tu correo y te enviaremos una contraseña temporal.</h3>
+    <div>
+    <input ng-model="user.name" class="loginInput" type="text" maxlength="30" placeholder="Correo electrónico" />
+    <br><br>
+    <button class="loginButton" type="submit" ng-click="sendRecoverRequest()">Enviar correo</button>
+    <br><br>
+    </div>
   </script>
   <div class="container">
-    <div class="four columns">
-      <img class="logo" src="css/images/logoDIFNL.jpg">
+    <div class="three columns">
+      <img class="logoDIF" src="css/images/logoDIFNL.jpg">
     </div>
-    <div class="twelve columns">
+    <div class="ten columns">
       <h1 class="appname"> Sistema de Administración de Oficios </h1>
-      <h2 class="appsubtitle"> Procuraduría de Defensa del Menor y la Familia</h2>
+      <h3 class="appsubtitle"> Procuraduría de la Defensa del Menor y la Familia</h3>
+    </div>
+    <div class="three columns">
+      <img class="logoUDEM" src="css/images/logoUDEM.jpg">
     </div>
   </div>
   <div id="loginSuperContainer">
     <div id="loginContainer" class="container">
       <div class="six columns offset-by-five">
         <h1 id="loginTitle">Iniciar sesión</h1>
-        <input ng-model="user.name" class="loginInput" type="text" maxlength="25" placeholder="Correo electrónico" />
-        <input ng-model="user.password" class="loginInput" type="password" ng-enter="login()" maxlength="10"placeholder="Contraseña">
+        <input ng-model="user.name" class="loginInput" type="text" maxlength="30" placeholder="Correo electrónico" />
+        <input ng-model="user.password" class="loginInput" type="password" ng-enter="login()" maxlength="20"placeholder="Contraseña">
         <button class="loginButton" type="submit" ng-click="login()">Entrar</button>
       </div>
     </div>
   </div>
+  <div class="container">
+    <div class="four columns">
+      <button class="passwordButton" type="submit" ng-click="changePassword()">Cambiar contraseña</button>
+    </div>
+    <div class="four columns offset-by-eight">
+      <button class="passwordButton" type="submit" ng-click="recoverPassword()">Recuperar contraseña</button>
+    </div>
+  </div>
+  <footer>
+    <p>Derechos Reservados ©</p>
+  </footer>
 </div>

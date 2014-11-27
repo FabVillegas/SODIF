@@ -5,7 +5,13 @@ capturaCtrl.$inject = ['$scope', '$firebase', '$state', 'firebaseRefFactory', 'd
 function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, dateFactory, ngDialog){
   /* Variables auxiliares */
   $scope.itExists = -1;
-  $scope.toCheckList = [];
+
+  $scope.getNumeroControl = function(){
+    $scope.numRef = $firebase(new Firebase(firebaseRefFactory.getMainRef() + 'numeroControl')).$asObject();
+    $scope.numRef.$watch(function(event){
+      $scope.oficio.numero = $scope.numRef.$value;
+    });
+  };
 
 
   $scope.erase = function(){
@@ -102,6 +108,12 @@ function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, dateFactory,
 
     }
     else{
+      /* incrementar numero de control */
+      var numControlRef = new Firebase(firebaseRefFactory.getMainRef() + 'numeroControl');
+      numControlRef.transaction(function (cont){
+        return (cont || 0) + 1;
+      });
+
       var capturaYear = dateFactory.getYear($scope.oficio.fecha);
       var capturaMonth = dateFactory.getMonth($scope.oficio.fecha);
       /* verificar que contadores de las autoridades y prioridad ya existen, sino, se crean */
@@ -174,16 +186,6 @@ function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, dateFactory,
     });
   };
 
-  $scope.checkOficios = function(){
-    $scope.toCheckList = $firebase(new Firebase(firebaseRefFactory.getRefToSaveOficio())).$asArray();
-    $scope.toCheckList.$watch(function(child_added){
-        $scope.itExists = $scope.toCheckList.$indexFor($scope.oficio.numero);
-        if($scope.itExists != -1)
-          $scope.disableStyle = {'background-color':'grey', 'border-color':'black'};
-        else
-          $scope.disableStyle = {};
-    });
-  };
-
   $scope.cleanInputs();
+  $scope.getNumeroControl();
 };

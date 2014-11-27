@@ -4,11 +4,13 @@ loginCtrl.$inject = ['$scope', '$state', '$firebase', '$firebaseAuth', 'firebase
 
 function loginCtrl($scope, $state, $firebase, $firebaseAuth, firebaseRefFactory, ngDialog){
 
+  $scope.finished = false;
   // instancias user
   $scope.user = {};
 
-  var dataRef = new Firebase(firebaseRefFactory.getMainRef());
-  $scope.authObj = $firebaseAuth(dataRef);
+
+  $scope.dataRef = new Firebase(firebaseRefFactory.getMainRef());
+  $scope.authObj = $firebaseAuth($scope.dataRef);
 
   $scope.closeDialog = function(){
     ngDialog.close({
@@ -17,7 +19,7 @@ function loginCtrl($scope, $state, $firebase, $firebaseAuth, firebaseRefFactory,
   };
   // metodos ng-click
   $scope.login = function(){
-    if($scope.user.name == undefined){
+    if($scope.user.name == undefined || $scope.user.password == undefined){
       ngDialog.open({
         template: 'errorMessage',
         closeByDocument: true,
@@ -44,5 +46,65 @@ function loginCtrl($scope, $state, $firebase, $firebaseAuth, firebaseRefFactory,
     else{
       $scope.closeDialog();
     }
+  };
+
+  $scope.changePassword = function(){
+    ngDialog.open({
+      template: 'changePasswordTemplate',
+      scope: $scope,
+      closeByDocument: true,
+      closeByEscape: true
+    });
+  };
+
+  $scope.recoverPassword = function(){
+    ngDialog.open({
+      template: 'recoverPasswordTemplate',
+      scope: $scope,
+      closeByDocument: true,
+      closeByEscape: true
+    });
+  };
+
+  $scope.sendChangeRequest = function(){
+    $scope.dataRef.changePassword({
+      email       : $scope.user.name,
+      oldPassword : $scope.user.oldPassword,
+      newPassword : $scope.user.newPassword
+    }, function(error) {
+      if (error === null) {
+        console.log("Password changed successfully");
+        ngDialog.close({
+          template: 'changePasswordTemplate',
+        });
+      } else {
+        console.log("Error changing password:", error);
+        ngDialog.open({
+          template: 'errorMessage',
+          closeByDocument: true,
+          closeByEscape: true
+        });
+      }
+    });
+  };
+
+  $scope.sendRecoverRequest = function(){
+    $scope.dataRef.resetPassword({
+      email : $scope.user.name
+    }, function(error) {
+    if (error === null) {
+      console.log("Password reset email sent successfully");
+      ngDialog.close({
+        template: 'recoverPasswordTemplate',
+      });
+    } else {
+      console.log("Error sending password reset email:", error);
+      ngDialog.open({
+        template: 'errorMessage',
+        closeByDocument: true,
+        closeByEscape: true
+      });
+    }
+  });
   };
 };
