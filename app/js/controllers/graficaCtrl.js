@@ -18,6 +18,7 @@ function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, date
   $scope.monthsRange = [];
   $scope.tiposDeJuzgados = [];
   $scope.autoridadArray = [];
+  $scope.areaArray = [];
 
   $scope.disableButtons = function(){
     if($scope.isDisabled)
@@ -66,6 +67,7 @@ function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, date
     $scope.cleanArray($scope.monthsRange);
     $scope.cleanArray($scope.tiposDeJuzgados);
     $scope.cleanArray($scope.autoridadArray);
+    $scope.cleanArray($scope.areaArray);
     /* limpiar grafica */
     $scope.config = {};
     $scope.data = {};
@@ -176,6 +178,17 @@ function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, date
     });
   };
 
+  $scope.areaQuery = function(firebaseRef, index){
+    $scope.callbacks[index] = new Firebase(firebaseRef);
+    $scope.callbacks[index].once('value', function(dataEvent){
+      var sync = $firebase($scope.callbacks[index]);
+      $scope.areaArray.push({
+        x: sync.$ref().path.n[2].substring(0,3),
+        y: [dataEvent.val()[ 'Psicología' ], dataEvent.val()[ 'Trabajo Social' ], dataEvent.val()[ 'Legal' ]]
+      });
+    });
+  };
+
   $scope.resolveQuery = function(arrayData, queryFunction){
     for($scope.z = 0; $scope.z < arrayData.length; $scope.z++){
       var tempYear = dateFactory.getYear(arrayData[$scope.z]);
@@ -197,6 +210,15 @@ function graficaCtrl($scope, $state, $firebase, ngDialog, destroyerFactory, date
         $scope.data = { // config chart data
           series: ['PGJE', 'PJE', 'PJF'],
           data: $scope.autoridadArray,
+        };
+        break;
+      case 'Área':
+        $scope.query = 'area';
+        $scope.resolveQuery(arrayData, $scope.areaQuery);
+        $scope.configChart();
+        $scope.data = { // config chart data
+          series: ['Psicología', 'Trabajo Social', 'Legal'],
+          data: $scope.areaArray,
         };
         break;
       case 'Tipo de juicio':

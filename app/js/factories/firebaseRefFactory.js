@@ -36,6 +36,10 @@ angular.module('sodif').factory('firebaseRefFactory', function(){
 			var url = this.getMainRef() + 'contadores/' + year + '/' + month + '/municipio/' + municipio;
 			return url;
 		},
+		getContadorAreaRef: function(year, month, area){
+			var url = this.getMainRef() + 'contadores/' + year + '/' + month + '/area/' + area;
+			return url;
+		},
 		goToRef: function(path){
 			var url = this.getMainRef() + path + '/';
 			return url;

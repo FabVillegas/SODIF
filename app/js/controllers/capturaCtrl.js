@@ -168,6 +168,11 @@ function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, dateFactory,
       contMunicipio.transaction(function (cont) {
         return (cont || 0) + 1;
       });
+      /* Referencia al contador de area (psicologia, social, legal) */
+      var contArea = new Firebase(firebaseRefFactory.getContadorAreaRef(capturaYear, capturaMonth, $scope.oficio.areaDeServicio));
+      contArea.transaction(function (cont) {
+        return (cont || 0) + 1;
+      });
       /* mensaje de exito */
       ngDialog.open({
         template: 'successMessage',
