@@ -125,9 +125,9 @@ function capturaCtrl($scope, $firebase, $state, firebaseRefFactory, dateFactory,
       var priorityVal = $firebase(new Firebase(firebaseRefFactory.getRefToSaveCaptura(capturaYear, capturaMonth) + 'contPrioridad')).$asObject();
       var id = $scope.oficio.numero;
       priorityVal.$loaded().then(function(child){
-        console.log(child.$value);
+        console.log(priorityVal.$value);
         var capturaRef = new Firebase(firebaseRefFactory.getRefToSaveCaptura(capturaYear, capturaMonth));
-        capturaRef.child(id).setWithPriority(true, child.$value);
+        capturaRef.child(id).setWithPriority(true, priorityVal.$value);
       });
       var contPrioridad = new Firebase(firebaseRefFactory.getRefToSaveCaptura(capturaYear, capturaMonth) + 'contPrioridad');
       contPrioridad.transaction(function (cont){
